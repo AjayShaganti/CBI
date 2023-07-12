@@ -1,0 +1,43 @@
+// $Id$
+// vim:ft=javascript
+
+ARG_ENABLE("zip", "ZIP support", "yes");
+
+if (PHP_ZIP != "no") {
+	if (CHECK_HEADER_ADD_INCLUDE("zip.h", "CFLAGS_ZIP", PHP_PHP_BUILD + "\\include;" + PHP_EXTRA_INCLUDES) &&
+		CHECK_HEADER_ADD_INCLUDE("zipconf.h", "CFLAGS_ZIP", PHP_PHP_BUILD + "\\lib\\libzip\\include;" + PHP_EXTRA_LIBS + "\\libzip\\include;" + PHP_ZIP)
+	) {
+		if (CHECK_LIB("libzip_a.lib;", "zip", PHP_ZIP) && CHECK_LIB("zlib_a.lib", "zip", PHP_ZIP) && CHECK_LIB("libbz2_a.lib", "zip", PHP_ZIP)) {
+			AC_DEFINE("ZIP_STATIC", 1);
+		} else if (!CHECK_LIB("libzip.lib;zip.lib", "zip", PHP_ZIP)) {
+			ERROR("zip not enabled; libraries not found");
+		}
+		
+		var old_conf_dir = configure_module_dirname;
+		
+		/* XXX tricky job here, override configure_module_dirname, define the basic extension,
+			then set it back*/
+			if (PHP_VERSION == 5) {
+				configure_module_dirname = configure_module_dirname + "\\php5";
+			} else if (PHP_VERSION == 7 && PHP_MINOR_VERSION < 3) {
+				configure_module_dirname = configure_module_dirname + "\\php7";
+			} else if (PHP_VERSION == 7 && PHP_MINOR_VERSION == 3) {
+				configure_module_dirname = configure_module_dirname + "\\php73";
+			} else if (PHP_VERSION == 7 && PHP_MINOR_VERSION == 4) {
+				configure_module_dirname = configure_module_dirname + "\\php74";
+			} else if (PHP_VERSION == 8) {
+				configure_module_dirname = configure_module_dirname + "\\php8";
+			} else {
+				ERROR("PHP " + PHP_VERSION + "." + PHP_MINOR_VERSION + " not supported");
+			}
+		
+		EXTENSION('zip', 'php_zip.c zip_stream.c');
+		configure_module_dirname = old_conf_dir;
+
+		AC_DEFINE('HAVE_ZIP', 1);
+		ADD_FLAG("CFLAGS_ZIP", "/D _WIN32");
+		AC_DEFINE('HAVE_LIBZIP', 1);
+	} else {
+		ERROR("zip not enabled; headers not found");
+	}
+}

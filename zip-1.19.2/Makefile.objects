@@ -1,0 +1,12 @@
+-include php8/php_zip.dep
+php8/php_zip.lo: /opt/lampp/htdocs/CBi/zip-1.19.2/php8/php_zip.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/opt/lampp/htdocs/CBi/zip-1.19.2 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /opt/lampp/htdocs/CBi/zip-1.19.2/php8/php_zip.c -o php8/php_zip.lo  -MMD -MF php8/php_zip.dep -MT php8/php_zip.lo
+-include php8/zip_stream.dep
+php8/zip_stream.lo: /opt/lampp/htdocs/CBi/zip-1.19.2/php8/zip_stream.c
+	$(LIBTOOL) --mode=compile $(CC) -I. -I/opt/lampp/htdocs/CBi/zip-1.19.2 $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)   -DZEND_COMPILE_DL_EXT=1 -c /opt/lampp/htdocs/CBi/zip-1.19.2/php8/zip_stream.c -o php8/zip_stream.lo  -MMD -MF php8/zip_stream.dep -MT php8/zip_stream.lo
+$(phplibdir)/zip.la: ./zip.la
+	$(LIBTOOL) --mode=install cp ./zip.la $(phplibdir)
+
+./zip.la: $(shared_objects_zip) $(ZIP_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) -shared $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS)  -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_zip) $(ZIP_SHARED_LIBADD)
+

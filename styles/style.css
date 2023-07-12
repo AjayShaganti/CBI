@@ -1,0 +1,1348 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Jost', sans-serif;
+    box-sizing: border-box;
+} 
+
+body{
+    height: 100vh;
+    width: 100vw;
+}
+
+#full-container{
+    margin-left: 10%;
+}
+	.corpu-logo{
+		margin-left:-20%;
+		margin-top:-10%;
+		width:140%;
+		height:220px;
+		}
+
+
+/* Anchor tag automatically inherits root color */
+a{
+    color: inherit;
+    cursor: pointer;
+}
+
+p{ 
+    font-weight: 400;  
+    color: #563e4d;
+}
+
+i{
+    color: #66bf8f;
+    padding: 0 0.5em 0 0; 
+    position: relative;
+}
+
+/* Heading styles */
+h1{
+    font: 1.9rem 'Jost', sans-serif;
+}
+
+h2{
+    font: 1.6rem 'Jost', sans-serif;
+}
+
+h3{
+    font: 1.3rem 'Jost', sans-serif;
+}
+
+h4{
+    font: 1.1rem 'Jost', sans-serif;
+}
+
+h5{
+    font: 0.9rem 'Jost', sans-serif;
+}
+
+h6{
+    font: 0.7rem 'Jost', sans-serif;
+} 
+
+/* Font weight styles */
+.strong0{
+    font-weight: 300; 
+}
+
+.strong1{
+    font-weight: 400; 
+}
+
+.strong2{
+    font-weight: 500; 
+}
+
+/* Center alignment */
+.center{
+    text-align: center;
+}
+
+.center-element{  
+    position: relative;
+    text-align: center; 
+}
+
+/* Use of background image for root bg */
+:root{ 
+    color: #3B281D; 
+} 
+
+/* Landing page container with background */
+.index-container{
+    background: url('images/index-university.jpg') no-repeat;
+    width: 100%;
+    height: 100vh;
+    clear: both;
+    float: left;
+    background-position: top;
+    background-size: cover;
+    position: relative;
+}
+
+/* CorpU logo large */
+.form-cube #large-img{
+    width: 30%;
+    padding: 0 0 1em 0;
+}
+
+/* Login and sign up containers and elements */
+.login-container{
+    width: 100%;
+    height: 100vh;
+    clear: both;
+    float: left;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    background-color: #7bcfa2;
+}
+
+.signup-container{
+    width: 100%;
+    height: 100vh;
+    margin: 0; 
+    clear: both;
+    float: left;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    background-color: #fff;
+}
+
+/* Form container for both login and sign up */
+.form-cube{
+    width: 90%;
+    max-width: 500px;
+    position: relative;   
+    background: #FFFCF9;
+    margin: 2em auto;
+    padding: 40px 60px 110px;
+    border-radius: 20px;
+    text-align: center;  
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+}
+
+.form-cube img{
+    width: 18%;
+    padding: 0 0 1em 0;
+}
+
+.form-cube h1{
+    font: 400 2rem 'Jost', sans-serif;
+    line-height: 1em;
+    margin-bottom: 30px;
+    color: #563e4d;
+    position: relative;
+}
+
+form p{
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+form a, .course-row a, .review-link{
+    color: #FF6978;
+    text-decoration: none;
+}
+
+.return-link{
+    color: #a39b9b;
+    text-decoration: none;
+}
+
+.review-link::after{
+    content: '';
+    background: url('images/arrow-right-s-fill.svg') no-repeat;
+    width: 17px;
+    height: 17px;
+    margin: 3px auto;  
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+.review-link:hover{
+    transform: translate(10%,0); 
+    transition: 275ms ease-in-out;
+}
+
+.return-link::before{
+    content: '';
+    background: url('images/arrow-left-s-fill.svg') no-repeat;
+    width: 17px;
+    height: 17px;
+    margin: 3px auto;  
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+.return-link:hover{
+    transform: translate(-10%,0); 
+    transition: 275ms ease-in-out;
+}
+
+form a:hover{
+    color: #FF6978;
+    text-decoration: none;
+    background: #ffeef0; 
+    border-radius: 3px;
+    transition: 275ms ease;
+}
+ 
+/* Input field styles, with floats */
+.input-field{
+    background: #eaeaea;
+    border: solid 1px #6D435A;
+    margin: 2px 0 17px; 
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.input-field i{
+    margin-left: 8px;
+    color: rgb(177, 177, 177);
+}
+
+input{
+    font-size: 1rem;
+    width: 100%;
+    border: 0; 
+    background: transparent;
+    outline: 0;
+    padding: 5px 0px 5px 15px;
+}
+
+#float-left, .float-left{
+    float: left;
+}
+
+#float-right, .float-right{
+    float: right;
+}
+
+.input-container #float-left{
+    padding: 1.5em 0 0 0;
+    float: left;
+}
+
+.input-container #float-right{
+    padding: 1.2em 0 0 0;
+    float: right;
+}
+
+.input-container #input-left{
+    padding: 0 0.25em 0 0; 
+    width: 50%;
+    float: left;
+}
+
+.input-container #input-right{ 
+    padding: 0 0 0 0.25em; 
+    width: 50%;
+    float: right;
+}
+
+/* General button style with hover */
+button#fill, button#fill-repeat{
+    font: 400 1rem 'Jost', sans-serif;;
+    color: #ffeef0;
+    background-color: #FF6978;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+button#no-fill{
+    font: 400 1rem 'Jost', sans-serif;;
+    color: #3B281D;
+    background-color: #e3e1e1;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+button#fill-blue{
+    font: 400 1rem 'Jost', sans-serif;;
+    color: #ffeef0;
+    background-color: #5e89ef;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+
+button#fill-green{
+    font: 400 1rem 'Jost', sans-serif;;
+    color: #ffeef0;
+    background-color: #66bf8f;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+button#fill:hover, button#fill-repeat:hover, button#fill-green:hover{
+    color: #ffeef0; 
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    cursor: pointer;
+    transition: 275ms ease;
+}
+
+button#no-fill:hover{
+    color: #3B281D; 
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    cursor: pointer;
+    transition: 275ms ease;
+}
+
+button#fill:active, button#fill-repeat:active{
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+}
+
+/* Select form and comment area styles */
+select{
+    font: 1rem 'Jost', sans-serif; 
+    background: #eaeaea;
+    border: solid 1px #6D435A;
+    outline: 0;
+    padding: 5px 15px;
+    margin: 2px 0 17px;
+    border-radius: 3px; 
+    width: 100%; 
+} 
+
+textarea{
+    font: 1rem 'Jost', sans-serif;
+    border: solid 1px #6D435A;
+    border-radius: 3px; 
+    padding: 5px 15px;
+    margin: 2px 0 17px;
+    width: 100%;
+    resize: vertical;
+}
+
+/* Navigation menu bar elements */
+.corpu-logo img{
+    width: 100%; 
+    padding: 2em; 
+} 
+
+header{
+    background-color: #eaeaea; 
+    width: 10%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    justify-content: space-between;
+    position: fixed;
+    transition: all .50s ease;
+    //overflow: auto; /* Added this line */
+}
+
+nav{ 
+    position: relative;
+}
+
+nav a{
+    border-top: 1px solid #eaeaea;
+    font: 400 1rem 'Jost', sans-serif;
+    color: inherit;  
+    text-align: left;
+    text-decoration: none; 
+    position: relative;
+    display: flex;
+}
+
+nav p{
+    padding: 1em 0 1em 0;
+    line-height: 1.1em;
+}
+
+nav i{
+    padding: 1em 0.4em 1em 1.2em;
+}
+
+.ri-logout-circle-line{
+    color: #e86774;
+	 width: 120px; /* Set the desired width */
+  height: 40px; /* Set the desired height */
+  font-size: 35px;
+}
+
+nav ul{ 
+    transition: all .5s;
+    background: #eaeaea;   
+    width: 100%;
+}
+
+nav li{
+    list-style: none;
+    display: flex; 
+    width: 100%; 
+	
+	
+}
+
+nav a:hover{  
+    background: #FFFCF9; 
+    border-top: 1px solid #eaeaea;
+    width: 100%; 
+    transition: 275ms ease;
+    cursor: pointer;
+	  padding-left:3%;
+}
+
+nav #select:link{  
+    color: #6D435A; 
+    background: #FFFCF9; 
+    width: 100%;
+}
+
+.burgerbtn{
+    font-size: 30px;
+    float: left; 
+    padding: 0.5em;
+    margin-right: 40px;
+    display: none; 
+}
+
+#burger{
+    display: none;
+}
+
+/* Succeeding pages top container */
+#page-top{
+    background-color: #7bcfa2;
+    padding: 2.65em 6em 4em;
+    width: 100%; 
+    clear: both;
+    float: left;  
+}
+
+#page-top-2{
+    background-color: #FF5E60;
+    padding: 2.65em 6em 4em;
+    width: 100%; 
+    clear: both;
+    float: left;  
+}
+
+/* General pages top container */
+#hero-top p, #page-top p, #page-top-2 p{
+    font: 400 3rem 'Jost', sans-serif;
+    width: 100%;
+    line-height: 1em;
+} 
+
+/* General heading text colors */  
+.white-txt{
+    color: #FFFCF9; 
+} 
+
+.grey-txt{
+    color: #b1a4ac; 
+} 
+
+.green-txt{
+    color: #66bf8f; 
+} 
+
+.violet-txt{
+    color: #6B29AC; 
+} 
+
+.uppercase-txt{
+    text-transform: uppercase;
+}
+
+.space-txt{
+    letter-spacing: .1rem;
+}
+
+.sub-header{
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: .2rem;
+}
+
+/* Main body container */  
+#body-container{
+    background-color: #FFFCF9; 
+    height: 90vh;
+    max-height: fit-content; 
+    padding: 1em 7em 3em;   
+    clear: both;
+    position: relative;
+}
+
+#body-extension{
+    background-color: #FFFCF9;  
+    max-height: fit-content;   
+    padding: 0 7em 3em;   
+    position: relative;
+}
+
+/* Applicants body container */  
+#app-body-container{
+    background-color: #FFFCF9; 
+    height: 120vh;
+    max-height: fit-content; 
+    padding: 1em 7em 3em;   
+    clear: both;
+}
+
+/* Edit profile for applicant body container */  
+#edit-body-container{
+    background-color: #FFFCF9; 
+    height: 120vh;
+    max-height: fit-content; 
+    padding: 1em 7em 3em;   
+    clear: both;
+}
+
+/* Applicant profile column */  
+.app-column{
+    float: left;
+    width: 50%;
+    padding: 1.5em 0 3em 3.5em;
+    display: block;
+    position: relative;
+}
+
+/* Staff and courses containers on index page */  
+.staff-container, .courses-container {
+    width: 100%;
+    max-width: 45%;
+    font-family: 'Jost', sans-serif;
+    text-align: left;
+    background: #FCFCFC;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 0.2);  
+    margin: 0 2.3em 0 0;  
+    border-radius: 20px;
+    position: relative;   
+    transform: translate(0,-10%); 
+    float: left;
+}
+
+.staff-container:hover, .courses-container:hover{  
+    box-shadow: 0 3px 13px rgb(0 0 0 / 0.2);   
+    transition: 275ms ease;
+}
+
+.staff-container img, .courses-container img{  
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+}
+
+/* Applicant containers on Applicants page */  
+.applicant-container{
+    width: 100%;
+    max-width: 45%;
+    font-family: 'Jost', sans-serif;
+    text-align: left;
+    background: #FCFCFC; 
+    box-shadow: 0 1px 6px rgb(0 0 0 / 0.2);  
+    margin: 1.2em;  
+    padding: 1em 1em 1.5em;
+    border-radius: 20px;
+    position: relative;    
+    float: left;
+}
+
+.applicant-container:hover{
+    box-shadow: 0 3px 13px rgb(0 0 0 / 0.2);   
+    transition: 275ms ease;
+}
+
+/* Applicant icon and circular bg for Applicants - Staff page */  
+.applicant-display{
+    background: url('images/applicant-fill.svg') no-repeat;
+    background-position: bottom;
+    opacity: 80%; 
+    width: 37px;
+    height: 37px;
+    margin: 3px auto;    
+}
+
+.applicant-display-bg{ 
+    background-color: #6B29AC; 
+    opacity: 70%;    
+    width: 37px;
+    height: 37px;
+    margin: 0 1em 0 0;
+    float: left;
+    overflow: hidden;
+    vertical-align: middle; 
+    border-radius: 50%; 
+}
+
+/* Book icon for Available Units - Applicant page */ 
+.unit-display{  
+    background: url('images/book-fill.svg') no-repeat; 
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin: 0 0.5em 0 0;  
+}
+
+.box-text{
+    padding: 0.5em 1.5em 1.5em;
+}
+
+#applicant-details, #account-details{    
+    height: 22em;
+    padding: 1em 0 4em;   
+    margin: 0 auto;
+    position: relative;
+    display: block;
+}
+
+/* Link styles for index page */  
+.staff-container a, .courses-container a{
+    font: 400 1rem 'Jost', sans-serif;
+    color: inherit;   
+    float: right;
+    text-decoration: none;
+}
+
+/* Tables */  
+#tablejobpostings, #tablejobopp{
+	width: 100%;
+}
+
+.jobtable {
+    width: auto;
+    height: auto;
+}  
+
+/* Container for courses */
+.row-head{ 
+    color: #a39b9b;  
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    transition: 275ms ease;
+}
+
+.course-row{
+    background-color: #FCFCFC;
+    color: #563e4d;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-wrap: wrap; 
+    margin: 0 0 1em;
+}
+
+.course-col-1:hover{
+    background-color: #FCFCFC;
+    border-left: 2px solid #66bf8f;
+    border-radius: 0 20px 20px 0;
+    transition: 275ms ease;
+}
+
+.course-row a:hover{
+    color: #FF6978;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: 275ms ease;
+}
+
+.course-row-add{
+    background-color: #FFFCF9;
+    color: #66bf8f;
+    border: 0.1em dashed #66bf8f; 
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap; 
+    margin: auto;
+    padding: 1em;
+    cursor: pointer;
+}
+
+.course-row-add:hover{ 
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);  
+}
+  
+/* Adds four columns */
+.head-col-0, .head-col-1, .head-col{
+    font: 0.75rem 'Jost', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 1em 0 1em 0;
+}
+
+.head-col-0{
+    flex: 5%;
+}
+
+.head-col-1{ 
+    flex: 20%; 
+}
+
+.head-col{ 
+    flex: 10%; 
+}
+
+.course-col-0, .course-col-1, .course-col{
+    font: 0.9rem 'Jost', sans-serif; 
+    padding: 1em;
+    border-left: 1px solid #eaeaea;  
+}
+
+.course-col-0{ 
+    flex: 5%; 
+}
+
+.course-col-1{ 
+    flex: 20%; 
+}
+
+.course-col{ 
+    flex: 10%; 
+}
+
+.title{
+    display: none;
+}
+
+#form-full{
+    margin: auto;
+<<<<<<< HEAD
+    padding: 2em 3em 5em;
+    width: 65%;
+=======
+    padding: 0 3em 5em;
+    width: 70%;
+>>>>>>> bb990313ce95203c3bfea0a87ed0792e19b2093c
+    position: relative; 
+}
+
+.red-icon{
+    background: url('images/delete-bin-line.svg') no-repeat;
+    width: 25px;
+    height: 25px;
+    margin: 3px auto; 
+    transition: transform .2s;
+}
+
+.red-icon:hover{
+    background: url('images/delete-bin-fill.svg') no-repeat;
+    transform: scale(1.2);  
+}
+
+#addCourseButton{
+    margin: auto;
+    transition: transform .2s;
+}
+
+.course-row-add .add-icon{
+    background: url('images/add-circle-line.svg') no-repeat;
+    width: 20px;
+    height: 20px;   
+    margin: 3px auto; 
+    vertical-align: middle; 
+    display: inline-block;
+    transition: transform .2s;
+}
+
+.course-col .add-icon{
+    background: url('images/add-circle-line.svg') no-repeat;
+    width: 25px;
+    height: 25px;   
+    margin: 3px auto; 
+    vertical-align: middle;  
+    transition: transform .2s;
+} 
+
+.add-icon:hover{
+    background: url('images/add-circle-fill.svg') no-repeat;
+    transform: scale(1.2);  
+}
+
+#addCourseButton:hover{    
+    transform: scale(1.02);
+}
+
+.add-course-popup{
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+}
+
+<<<<<<< HEAD
+.myChart{
+    width: 60%;
+    padding: 0 0 2em 0;
+    margin: auto; 
+    position: relative; 
+}
+
+.myChart2{ 
+    background-color: #FFFCF9;
+    width: 90%;
+    margin: auto; 
+    position: relative;  
+=======
+.fieldset-box{
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    margin: 0.7em 0 1.5em 0;
+    padding: 1rem;
+    width: 100%;
+>>>>>>> bb990313ce95203c3bfea0a87ed0792e19b2093c
+}
+
+/* Footer styles */
+footer{
+    background-color: #40215f;
+    width: 100%; 
+    height: 7em;
+    clear: both;
+    position: relative; 
+}  
+
+/* Footer two-column and lists styles */
+#footer-left{  
+    padding: 2.5em 1em 3em 6em;
+    width: 50%;
+    float: left;
+}
+
+#footer-right{
+    padding: 2.5em 6em 3em 0;
+    width: 50%;
+    float: right;  
+    text-align: right;
+} 
+
+footer ul li, ul li a{
+    font: 400 1rem 'Jost', sans-serif;
+    color: #FCFCFC;
+    padding: 0 1em 0 0;
+}
+
+footer a{
+    text-decoration: none;
+}
+
+#footer-left ul a{  
+    display: block;
+    transition: 275ms ease;
+}
+
+footer ul li a:hover{ 
+    text-decoration: 2px solid underline #FF6978; 
+    transition: 275ms ease;
+}
+
+#footer-left ul li, #footer-right ul li{
+    list-style: none;
+    display: inline-block;
+} 
+
+/* Tablets media query for responsive elements */
+@media (max-width: 1280px){
+    /* Navigation menu bar elements */
+    .corpu-logo img{
+        width: 100%;
+        color: #6B29AC;    
+        padding: 1em;
+    }  
+
+    header{
+        background-color: #eaeaea; 
+        width: 10%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000; 
+        justify-content: space-between;
+        position: fixed;
+        transition: all .50s ease;
+    } 
+ 
+    nav i{
+        font: 400 1.8rem 'Jost', sans-serif;
+        margin: auto; 
+        padding: 0.5em 0 0.2em 0.5em; 
+        display: block; 
+    }
+
+    nav p{ 
+        font: 400 0.8rem 'Jost', sans-serif;
+        margin: auto; 
+        padding: 0 0 1em 1.2em;
+        text-align: center;   
+        display: block;
+    } 
+
+    nav a{
+        border-top: 1px solid #eaeaea; 
+        color: inherit;   
+        text-decoration: none; 
+        position: relative;
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 0;
+    }
+
+    nav ul{ 
+        transition: all .5s;
+        background: #eaeaea;   
+        width: 100%;
+    }
+
+    nav li{
+        list-style: none;
+        display: flex; 
+        width: 100%; 
+    }
+
+    nav a:hover{  
+        background: #FFFCF9; 
+        border-top: 1px solid #eaeaea;
+        width: 100%; 
+        transition: 275ms ease;
+        cursor: pointer;
+    }
+
+    nav #select:link{  
+        color: #6D435A; 
+        background: #FFFCF9; 
+        width: 100%;
+        text-align: center;
+        display: block;
+    }
+
+    /* Main body container */  
+    #body-container{
+        height: 75vh;
+        background-color: #FFFCF9;
+        padding: 3em 2em 1em; 
+    }
+
+    #app-body-container{
+        background-color: #FFFCF9;
+        padding: 3em 2em 1em; 
+    }
+
+    .staff-container, .courses-container{
+        width: 100%;
+        max-width: 45%;
+        font-family: 'Jost', sans-serif;
+        text-align: left;
+        background: #FFFCF9;
+        box-shadow: 0 1px 6px rgb(0 0 0 / 0.2);  
+        margin: 0 1em 0;  
+        border-radius: 20px;
+        position: relative;   
+        transform: translate(0,-15%); 
+        float: left;
+    }
+
+    /* Adds four columns */
+    .head-col-0, .head-col-1, .head-col{
+        font: 0.67rem 'Jost', sans-serif;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 0.5em 0 0.5em 0;
+    }
+
+    .head-col-0{
+        flex: 5%;
+    }
+
+    .head-col-1{ 
+        flex: 20%; 
+    }
+
+    .head-col{ 
+        flex: 10%; 
+    }
+
+    .course-col-0, .course-col-1, .course-col{
+        font: 0.9rem 'Jost', sans-serif; 
+        padding: 0.5em;
+        border-left: 1px solid #eaeaea; 
+    }
+
+    .course-col-0{ 
+        flex: 5%; 
+    }
+
+    .course-col-1{ 
+        flex: 20%; 
+    }
+
+    .course-col{ 
+        flex: 10%; 
+    }
+
+    #form-full{
+        margin: auto;
+        padding: 0 3em 5em;
+        width: 75%;
+        position: relative; 
+    }
+
+    /* Applicant containers on Applicants page */  
+    .applicant-container{
+        width: 100%;
+        max-width: 45%;
+        margin: 1em;  
+        padding: 0.7em 0.3em 1.5em; 
+    }
+
+    h4{
+        font: 1rem 'Jost', sans-serif;
+    }
+
+    .review-link{
+        margin: 1.3em 0 0;
+    }
+
+    /* Form to 100% */
+    #form-full{
+        margin: auto;
+        padding: 0 0 2em;
+        width: 100%;
+        position: relative; 
+    }
+
+    /* Footer two-column and lists styles */
+    #footer-left{  
+        padding: 2.5em 0 3em 3em;
+        width: 50%;
+        float: left;
+    }
+
+    #footer-right{
+        padding: 2.5em 3em 3em 0;
+        width: 50%;
+        float: right;
+        text-align: right;
+    }
+
+    footer ul li, ul li a{
+        font: 400 1rem 'Jost', sans-serif;
+        color: #FCFCFC;
+        padding: 0 0.5em 0 0;
+    }
+} 
+
+/* Phones media query for responsive elements */
+@media (max-width: 858px){
+    /* Form container for both login and sign up */
+    .form-cube{ 
+        padding: 40px 30px 110px; 
+    }
+    /* Navigation menu bar elements */
+    .corpu-logo img{
+        width: 25%; 
+        max-width: 8em;
+        color: #6B29AC;    
+        padding: 1em;
+        margin: auto;
+        float: left;
+    } 
+
+    .burgerbtn{
+        display: block;
+        float: right;
+        margin: auto;
+        padding: 0;
+    } 
+
+    header{
+        background-color: #eaeaea; 
+        width: 100%;
+        height: 7vh;
+        top: 0;
+        left: 0;
+        z-index: 1000; 
+        justify-content: space-between;
+        position: fixed;
+        transition: all .50s ease;
+    }
+
+    nav i{    
+        text-align: left; 
+        float: left;
+        padding: 0.5em;
+    }
+
+    nav li i{
+        padding: 0.7em 0.4em 0 35%; 
+    }
+
+    nav p{ 
+        font: 400 1.1rem 'Jost', sans-serif; 
+        text-align: left; 
+        line-height: 3.2em;
+        padding: 0.5em 2em; 
+    } 
+
+    nav a{
+        border-top: 1px solid #eaeaea;
+        font: 400 1rem 'Jost', sans-serif;
+        color: inherit;   
+        text-decoration: none;  
+        position: relative;  
+        float: left; 
+    }   
+
+    nav ul{
+        position: fixed;
+        width: 100%; 
+        height: 100vh; 
+        top: 7%;
+        right: -100%;
+        transition: all .5s;
+        background: #eaeaea; 
+    }
+
+    #burger:checked ~ ul{
+        right: 0;
+    }
+
+    /* Succeeding pages top container */
+    #full-container{ 
+        margin: 0;
+    }
+    
+    #page-top{
+        background-color: #7bcfa2;
+        padding: 5em 3em 2em;
+        width: 100%; 
+        clear: both;
+        float: left;  
+    }
+
+    #page-top-2{ 
+        padding: 5em 3em 2em;
+        width: 100%; 
+        clear: both;
+        float: left;  
+    }
+
+    #hero-top p, #page-top p, #page-top-2 p{
+        font: 400 2.3rem 'Jost', sans-serif;
+        width: 100%;
+        line-height: 1.2em;
+    } 
+    
+    /* Main body container */  
+    #body-container{
+        background-color: #FFFCF9; 
+        padding: 2em 2em 1em;  
+        height: fit-content; 
+        clear: both;
+    }
+
+    #body-extension{
+        background-color: #FFFCF9;  
+        max-height: fit-content;   
+        padding: 2em 2em 4em;    
+        position: relative;
+    }
+
+    #app-body-container{
+        background-color: #FFFCF9; 
+        padding: 2em 2em 1em; 
+        height: 230vh;
+        max-height: 100%; 
+        clear: both;
+    }
+
+    #edit-body-container{
+        background-color: #FFFCF9; 
+        padding: 2em 2em 1em; 
+<<<<<<< HEAD
+        height: 100vh;
+=======
+        height: 120vh;
+>>>>>>> bb990313ce95203c3bfea0a87ed0792e19b2093c
+        max-height: 100%; 
+        clear: both;
+    }
+
+    /* Staff and courses containers on index page */  
+    .staff-container, .courses-container {
+        width: 100%;
+        max-width: 100%;
+        font-family: 'Jost', sans-serif;
+        text-align: left;
+        background: #FFFCF9;
+        box-shadow: 0 1px 6px rgb(0 0 0 / 0.2);  
+        margin: 2em 2.3em 1em 0;  
+        border-radius: 20px;
+        position: relative;   
+        transform: translate(0,-7%); 
+        float: left;
+    }   
+
+    .staff-container img, .courses-container img{  
+        width: 100%;
+        height: 15em; 
+        object-fit: cover;
+        border-radius: 20px 20px 0 0;
+    }
+
+    #box-text{
+        padding: 1em 1.5em 2em;
+    }
+
+    .title{
+        display: block;
+    }
+
+    .course-col-0{
+        flex: 5%;
+        padding: 0.5em;
+        border-bottom: 1px solid #eaeaea; 
+    }
+
+    .course-col-0 button, .course-col-1 button{
+        float: right;
+    } 
+ 
+    .course-col-1{
+        flex: 100%;
+        padding: 0.5em;
+        border-bottom: 1px solid #eaeaea; 
+    }
+
+    .course-col{
+        flex: 15%;
+        padding: 0.5em;
+        border-bottom: 1px solid #eaeaea; 
+    }
+
+    .row-head{ 
+        display: none;
+    }
+
+    #form-full{
+        margin: auto;
+        padding: 3em 1em 1em;
+        width: 100%;
+        position: relative; 
+    }
+
+    /* Applicant containers on Applicants page */  
+    .applicant-container{
+        width: 100%;
+        max-width: 100%;
+        font-family: 'Jost', sans-serif;
+        text-align: left;
+        background: #FCFCFC; 
+        box-shadow: 0 1px 6px rgb(0 0 0 / 0.2);  
+        margin: 0.5em auto 1em;  
+        padding: 1em 1em 1.5em;
+        border-radius: 20px;
+        position: relative;    
+        float: left;
+    }
+
+    /* Applicant profile column */  
+    .app-column{
+        float: left;
+        width: 100%;
+        padding: 1.5em 0 0.5em 3.5em;
+        display: block;
+        position: relative;
+    } 
+    /* Spacer to bottom for elements */
+    .spacer-bottom{ 
+        top: 90%; 
+        right: 2em;
+        margin: 2px;
+        display: block; 
+        position: absolute;
+    } 
+
+<<<<<<< HEAD
+    .myChart{
+        width: 100%;
+        padding: 0 0 2em 0;
+        margin: auto; 
+        position: relative; 
+    }
+    
+    .myChart2{ 
+        background-color: #FFFCF9;
+        width: 100%; 
+        margin: auto; 
+        position: relative;  
+    }
+=======
+    /* Form to 100% */
+    #form-full{
+        margin: auto;
+        padding: 0 0 2em;
+        width: 100%;
+        position: relative; 
+    }
+>>>>>>> bb990313ce95203c3bfea0a87ed0792e19b2093c
+
+    /* Footer styles */
+    footer{
+        background-color: #40215f;
+        width: 100%;  
+        height: 11vh; 
+        clear: both;
+        position: relative; 
+    }  
+
+    /* Footer two-column and lists styles */
+    #footer-left{  
+        padding: 1.5em 0;
+        width: 100%;
+        float: left;
+        text-align: center;
+    }
+
+    #footer-right{
+        display: none;
+    } 
+
+    footer ul li, ul li a{
+        font: 400 0.9rem 'Jost', sans-serif;
+        color: #FCFCFC;
+        padding: 0 0.5em 0 0;
+    }   
+
+}

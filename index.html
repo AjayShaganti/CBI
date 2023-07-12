@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!-- Viewport set to scale 1.0 -->       
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>CBi &#8211; Sign In</title>
+        <!-- References to external basic CSS file -->
+        <link rel="stylesheet" type="text/css" href="styles/style.css">
+        <!-- Favicon for tab -->
+        <link rel="icon" type="image/x-icon" href="images/game-fill.png">
+        <!-- References to web icons from Remixicon.com -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+        <!-- References to external fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+             <!-- Box container containing elements -->
+			 <br><br><br><br><br><br><br><br><br><br>
+            <div class="form-cube">
+                <form method="post" action="verify.php">
+                    <div class="input-container">
+                        <!-- Field for user ID starts -->
+                        <div class="input-field"> 
+                            <i class="ri-user-fill"></i> <!-- Web icon from Remixicon -->
+                            <!-- HTML validation -->
+                            <input type="text" name="staffID" id="staffID" maxlength="4" required="required" placeholder="Staff ID"> 
+                        </div>
+                        <!-- Field for password starts -->
+                        <div class="input-field"> 
+                            <i class="ri-lock-fill"></i>
+                            <!-- HTML validation -->
+                            <input type="password" name="password" id="password" maxlength="10"  placeholder="Password"> 
+                        </div> 
+                        <!-- Links for password retrieval, applicant login and registration -->
+
+                        <div id="float-right">
+                             <!-- Form button that submits input to backend -->
+                            <button id="fill" class="signinBttn" type="submit" value="submit" >Sign In</button> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+		<script src='login-staff.js'></script>
+    </body>
+</html>
