@@ -43,6 +43,14 @@ include 'common.php';
 	margin-left:-21.55%;
 width:100%;
 }
+#tab4 {
+	margin-left:-28.0%;
+width:100%;
+}
+#tab5 {
+	margin-left:-37.8%;
+width:100%;
+}
 #lbt{
 	padding-top: 0px;
 
@@ -112,9 +120,18 @@ label {
 	font-weight:bold;
 
 }
+#rad1 {
+	padding-top:4%;
+	margin-bottom:-12.35%;
+	margin-left:-20%;
+	//z-index:10;
+}
 
-h3 {
-	color:red;
+#rad2 {
+	//padding-top:2%;
+	margin-top:-8.35%;
+	margin-left:20%;
+	//z-index:10;
 }
 
 
@@ -147,92 +164,31 @@ h3 {
 <div class="wrapper">
   <div class="tabs">
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-1"  class="tab-switch">
       <label for="tab-1" class="tab-label">HYMOD & TOP HAT</label>
       <div id="tab1" class="tab-content">
 <?php
-include 'connection.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-    $binlocation = $_POST['binlocation'];
-	$partname = $_POST['partname'];
-	$partno = $_POST['partno'];
-	$supplier = $_POST['supplier'];
-	$max = $_POST['max'];
-	$min = $_POST['min'];
-	$purchaseprice = $_POST['purchaseprice'];
-	$units = $_POST['units'];
-	$quantity = $_POST['quantity'];
-	$category = $_POST['category'];
-	$limit = $_POST['limit'];
-
-    $query = "INSERT INTO `tophathymod` (`BinLocation`, `PartName`, `PartNo`, `Supplier`, `Max`, `Min`, `PurchasePrice`, `Units`, `Quantity`, `Category`, `Limit`) VALUES ('$binlocation', '$partname', '$partno', '$supplier', '$max', '$min', '$purchaseprice', '$units', '$quantity', '$category', '$limit')";
-
-    // Execute the query or throw an exception
-    try{if (mysqli_query($conn, $query)) {
-      $msg="Data for ".$binlocation." added successfully.";
-    } else {
-      throw new Exception(mysqli_error($conn));
-    }
-	}
-   catch (Exception $e) {
-   $msg="Error: " . $e->getMessage();
-  }
 
 				
-								echo "	<div class=\"form-cube\"><h3 style=\"color:red;\">".$msg."</h3><br>
-								<h1> Adding new item to HYMOD/Top-Hat list</h1><br>
-								<form method=\"post\" id=\"myForm\" action\"hmtp-add2.php\">
-									<label> Bin Location: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
-									<label> Description: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"partname\"  name=\"partname\" required></div>
-									<label> Part Number: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
-									<label> Supplier: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
-									<label> Max: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"number\" id=\"max\"  name=\"max\"></div>
-									<label> Min: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"number\" id=\"min\"  name=\"min\"></div>
-									<label> Purchase Price: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"purchaseprice\"  name=\"purchaseprice\"></div>
-									<label> Price for No of Units: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"units\"  name=\"units\"></div>
-									<label>Available Stock: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"quantity\"  name=\"quantity\"></div>
-									<label >Category:</label><br>
-									<select name=\"category\" id=\"category\" >
-									<option value=\"HYMOD\">HYMOD</option>
-									<option value=\"Top Hat\">Top Hat</option></select><br>
-									<label> Limit: </label>
-									<div class=\"input-field\" id=\"idFld\"> 
-									<input type=\"text\" id=\"limit\"  name=\"limit\"></div><br>
-									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
-								</form></div>";
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage HYMOD/Top-Hat Data</h1>
+											
+							<br><br><a href=\"hmtp-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"hmtp-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"hmtp-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
 ?>
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" >
       <label for="tab-2" class="tab-label">KANBAN STOCK</label>
       <div id="tab2" class="tab-content">
 <?php
-
-				
 								echo "
 												
 								<center><form method=\"post\" id=\"myForm\">
@@ -248,14 +204,11 @@ error_reporting(E_ALL);
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch" >
       <label for="tab-3" class="tab-label">CABLES</label>
       <div id="tab3" class="tab-content">
-<?php
-
-				
-								echo "
-												
+<?php			
+							echo "
 								<center><form method=\"post\" id=\"myForm\">
 									<h1> Manage Cables Data</h1>
 											
@@ -266,29 +219,78 @@ error_reporting(E_ALL);
 							  
 								</form></center>";
 ?>
-
-
-
 	</div>
     </div>
-	    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" checked>
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
-<?php
+	  <?php
+include 'connection.php';
 
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-									<h1> Manage Consumables Data</h1>
-											
-							<br><br><a href=\"consumables-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-							<a href=\"consumables-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"consumables-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
+    $binlocation = $_POST['binlocation'];
+	$partname = $_POST['partname'];
+	$partno = $_POST['partno'];
+	$supplier = $_POST['supplier'];
+	$Max = $_POST['Max'];
+	$Min = $_POST['Min'];
+	$OrderUnitSpec = $_POST['OrderUnitSpec'];
+    $PackQty = $_POST['PackQty'];
+	$PurchasePrice = $_POST['PurchasePrice'];
+	$Quantity = $_POST['Quantity'];
+
+    $query = "INSERT INTO `consumables`(`BinLocation`, `PartName`, `PartNo`, `Supplier`, `Max`, `Min`,`OrderUnitSpec`, `PackQty`, `PurchasePrice`,`Quantity`, `LastUpdated`, `Category`) VALUES ('$binlocation', '$partname', '$partno', '$supplier', '$Max', '$Min', '$OrderUnitSpec', '$PackQty', '$PurchasePrice','$Quantity',Now(),'Consumables' )";
+
+    // Execute the query or throw an exception
+    try{if (mysqli_query($conn, $query)) {
+      $msg="Data for ".$binlocation." added successfully.";
+    } else {
+      throw new Exception(mysqli_error($conn));
+    }
+	}
+   catch (Exception $e) {
+   $msg="Error: " . $e->getMessage();
+  }
+
+								echo "	<div class=\"form-cube\"><h3 style=\"color:red;\">".$msg."</h3><br>
+								<h1> Adding new item to Consumables</h1><br>
+								<form method=\"post\" id=\"myForm\" action=\"consumables-add2.php\">
+									<label> Bin Location: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
+									<label> Description: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"text\" id=\"partname\"  name=\"partname\" required></div>
+									<label> Part Number: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
+									<label>Supplier: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
+									<label> Max: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"number\" id=\"max\"  name=\"Max\"></div>
+									<label> Min: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"number\" id=\"min\"  name=\"Min\"></div>
+									<label> Order Unit Spec: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"OrderUnitSpec\" required></div>
+									<label> Pack Qty: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"number\" id=\"partname\"  name=\"PackQty\" required></div>
+									<label> Purchase Price: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"text\" id=\"partno\"  name=\"PurchasePrice\" required></div>
+									<label>Quantity: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"number\" id=\"supplier\"  name=\"Quantity\"></div>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
+								</form></div>";
 ?>
 	</div>
     </div>
@@ -314,7 +316,8 @@ error_reporting(E_ALL);
 	</div>
     </div>
   </div>
-</div><?php include 'loading.php'; ?>
+</div>
 <script>
 
 </script>
+<?php include 'loading.php'; ?>

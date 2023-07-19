@@ -187,6 +187,7 @@ position: sticky;
     <tr>
       <th>Sales Order No</th>
       <th>Fitter Name</th>
+      <th>Bin Location</th>
       <th>Part No</th>
       <th>Category</th>
 	  <th>Quantity Used</th>
@@ -204,6 +205,7 @@ position: sticky;
       $partNo = $row['partno'];
       $category = $row['category'];
       $type = $row['type'];
+	  $BinLocation = $row['BinLocation'];
       //$scandate = $row['scandate'];
 	   $formattedTimestamp = date('d/m/y H:i', strtotime($row['scandate']));
 	  $used=$row['quantity'];
@@ -214,6 +216,7 @@ position: sticky;
       echo "<tr style='background-color: $rowColor;'>
               <td>$salesOrderNo</td>
               <td>$fitterName</td>
+              <td>$BinLocation</td>
               <td>$partNo</td>
               <td>$category</td>
               <td>$used</td>
@@ -245,10 +248,10 @@ position: sticky;
         var row = rows[i];
         var salesOrderCell = row.cells[0];
         var fitterNameCell = row.cells[1];
-        var partNoCell = row.cells[2];
-        var categoryCell = row.cells[3];
-        var typeCell = row.cells[6];
-        var dateCell = row.cells[7];
+        var partNoCell = row.cells[3];
+        var categoryCell = row.cells[4];
+        var typeCell = row.cells[7];
+        var dateCell = row.cells[8];
 
         var salesOrderMatch = salesOrder === "" || salesOrderCell.innerText === salesOrder;
         var fitterNameMatch = fitterName === "" || fitterNameCell.innerText === fitterName;

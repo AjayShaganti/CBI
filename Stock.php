@@ -59,7 +59,7 @@ width:100%;
 width:100%;
 }
 #tab5 {
-	margin-left:-22%;
+	margin-left:-38%;
 width:100%;
 }
 #lbt{
@@ -73,7 +73,7 @@ width:100%;
 .tab-switch {
   display: none;
 }
-h5 {
+h4 {
 color:red;
 }
 
@@ -110,12 +110,22 @@ thead th {
 
 }
 
-    #lbt3,#lbt4 th {
+    #lbt3 th {
         position: sticky;
           top: -1.7rem;
-  z-index:10;
+  z-index:5;
+    }   
 
+	#lbt4 th {
+        position: sticky;
+          top: -1.7rem;
+  z-index:6;
+    }  
 
+	#lbt5 th {
+        position: sticky;
+          top: -1.7rem;
+  z-index:7;
     }
     .highlighted {
         background-color:#708090;
@@ -243,7 +253,7 @@ if ($conn) {
     $result = mysqli_query($conn, $query);
     if ($result) {
 
-echo "<center><div id=\"top1\"><h1>Hymod & Top-Hat</h1><button id=\"fill-green\" onclick=\"printTable();\">Print</button>
+echo "<center><div id=\"top1\"><h1>HYMOD & TOP HAT</h1><button id=\"fill-green\" onclick=\"printTable();\">Print</button>
 <div id=\"filters\">
     <label for=\"category\">Category:</label>
     <select id=\"category\" onchange=\"applyFilters()\">
@@ -332,7 +342,8 @@ echo "</select>
     <div class="tab">
       <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
       <label for="tab-2" class="tab-label">KANBAN STOCK</label>
-      <div id="tab2" class="tab-content"><?php
+      <div id="tab2" class="tab-content">
+	  <?php
 include 'connection.php';
 
 $total = 0;
@@ -354,7 +365,7 @@ if ($conn) {
 
     $result = mysqli_query($conn, $query);
     if ($result) {
-		echo "<center><br><h1> Kanban Stock </h1><button id=\"fill-green\" onclick=\"printTable2();\">Print</button>";
+		echo "<center><br><h1> KANBAN STOCK </h1><button id=\"fill-green\" onclick=\"printTable2();\">Print</button>";
 
         echo "<table class=\"table2\" id=\"lbt2\" border='2'>
                 <thead>
@@ -449,7 +460,7 @@ if ($conn) {
     if ($result) {
         $record = mysqli_fetch_assoc($result);
         if ($record) {
-            echo "<center><h1>Cables</h1><br><h5>***This data is for reference and does not track or contain information about the available quantity of the cables***</h5><br><br><button id=\"fill-green\" onclick=\"printTable3();\">Print</button>
+            echo "<center><h1>CABLES</h1><br><h4>***This data is for reference and does not track or contain information about the available quantity of the cables***</h4><br><br><button id=\"fill-green\" onclick=\"printTable3();\">Print</button>
                 <table id=\"lbt3\" border='2'>
                     <tr>
                         <th>Bin Location</th>
@@ -508,7 +519,7 @@ if ($conn) {
     if ($result) {
         $record = mysqli_fetch_assoc($result);
         if ($record) {
-            echo "<center><h1>Consumables</h1><br><h5>***This data is for reference and does not track the available quantity of the items***</h5><br><br><button id=\"fill-green\" onclick=\"printTable4();\">Print</button>
+            echo "<center><h1>CONSUMABLES</h1><br><h4>***This data is for reference and does not track the available quantity of the items***</h4><br><br><button id=\"fill-green\" onclick=\"printTable4();\">Print</button>
                 <table id=\"lbt4\" border='2'>
                     <tr>
                         <th>Bin Location</th>
@@ -574,7 +585,7 @@ if ($conn) {
     if ($result) {
         $record = mysqli_fetch_assoc($result);
         if ($record) {
-            echo "<center><h1>Consumables</h1><br><h5>***This data is for reference and does not track the available quantity of the items***</h5><br><br><button id=\"fill-green\" onclick=\"printTable4();\">Print</button>
+            echo "<center><h1>LABELS</h1><br><h4>***This data is for reference and does not track the available quantity of the items***</h4><br><br><button id=\"fill-green\" onclick=\"printTable5();\">Print</button>
                 <table id=\"lbt5\" border='2'>
                     <tr>
                         <th>Bin Location</th>
@@ -783,6 +794,20 @@ var th=Number('<?php echo round($tophattotal,2); ?>');
         printWindow.print();
     }
 
+    function printTable5() {
+        var table = document.getElementById("lbt5").cloneNode(true);
+
+        var printWindow = window.open('', '', 'width=800,height=600');
+        printWindow.document.open();
+        printWindow.document.write('<html><head><title>Print Table</title>');
+        printWindow.document.write('<style>' + getComputedStyle(table).cssText + '</style>');
+        printWindow.document.write('<style> #lbt5{ border-collapse: collapse; text-align:center;} th { background-color: #FF6978;}' + '</style>');
+        printWindow.document.write('</head><center><body>');
+        printWindow.document.write(table.outerHTML);
+        printWindow.document.write('</body></center></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
 function setupRowClickListeners() {
   var rows = document.getElementById("lbt").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
   for (var i = 0; i < rows.length; i++) {

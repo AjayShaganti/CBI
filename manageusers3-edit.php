@@ -101,9 +101,9 @@ ini_set('display_errors', '1');
 session_start();
 $fittername = $_POST['fittername'];
 $password = $_POST['password'];
-$using = $_POST['using'];
-$ordering = $_POST['ordering'];
-$receiving = $_POST['receiving'];
+$kanban = $_POST['kanban'];
+$cables = $_POST['cables'];
+$hymod = $_POST['hymod'];
 $msg = '';
 
 
@@ -119,23 +119,23 @@ try {
             $params[] = $password;
         }
 
-        if (isset($using) && $using!== ''){
-            $updateQuery .= "consuming = ?, ";
-            $params[] = $using;
+        if (isset($kanban) && $kanban!== ''){
+            $updateQuery .= "kanban = ?, ";
+            $params[] = $kanban;
 
 
         }
 
-	if (isset($ordering) && $ordering!== '') {
-            $updateQuery .= "ordering = ?, ";
-            $params[] = $ordering;
+	if (isset($cables) && $cables!== '') {
+            $updateQuery .= "cables = ?, ";
+            $params[] = $cables;
 
 
         }
 
-        if (isset($receiving) && $receiving !== '') {
-            $updateQuery .= "receiving = ?, ";
-            $params[] = $receiving;
+        if (isset($hymod) && $hymod !== '') {
+            $updateQuery .= "hmtp = ?, ";
+            $params[] = $hymod;
 
 
         }

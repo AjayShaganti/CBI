@@ -1,5 +1,6 @@
 <?php
 include 'common.php';
+echo " <script src=\"https://unpkg.com/xlsx/dist/xlsx.full.min.js\"></script>";
 ?>
 <style>
 * {
@@ -317,7 +318,8 @@ echo "</select>
 echo "<button id=\"fill-green\" onclick=\"printTable1();\">Print</button><div id=\"filters\">
 <label for=\"status\">Status:</label>
 <select id=\"status\" onchange=\"applyFilters1()\">
-<option value=\"\">All</option>"; // Include the default "All" option here
+<option value=\"\">All</option>
+"; // Include the default "All" option here
 
 $statuses = array();
 mysqli_data_seek($reorderResult, 0); // Reset the result pointer
@@ -331,7 +333,7 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
 }
 
 echo "</select>
-</div>";
+</div><br><button id=\"fill-blue\" onclick=\"exportToExcel1()\">Export to Excel</button>";
 
     echo "<table class=\"reorder1\" id=\"lbt1\" border='2'>
 <thead>
@@ -1065,6 +1067,52 @@ function printTable1() {
   printWindow.print();
 }
 
+    function exportToExcel1() {
+      var table = document.getElementById("lbt1");
+
+      // Clone the table and remove unwanted columns and buttons
+      var clonedTable = table.cloneNode(true);
+      var columnsToRemove = [8, 10,12]; // Indices of the columns to remove
+
+      var rows = clonedTable.getElementsByTagName("tr");
+      for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName("td");
+        for (var j = columnsToRemove.length - 1; j >= 0; j--) {
+          var columnIndex = columnsToRemove[j];
+          cells[columnIndex].remove();
+        }
+
+        var buttons = rows[i].getElementsByTagName("button");
+        for (var k = buttons.length - 1; k >= 0; k--) {
+          var button = buttons[k];
+          button.parentNode.removeChild(button);
+        }
+      }
+
+      var workbook = XLSX.utils.table_to_book(clonedTable);
+      var sheetName = workbook.SheetNames[0];
+      var worksheet = workbook.Sheets[sheetName];
+
+      // Generate a Blob object
+      var wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      var blob = new Blob([wbout], { type: 'application/octet-stream' });
+
+      // Create a download link
+      var a = document.createElement('a');
+      var url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = 'HYMODTOPHAT.xlsx';
+
+      // Append the link to the body and click it
+      document.body.appendChild(a);
+      a.click();
+
+      // Clean up resources
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    
+    }
+
 
 
 function applyFilters() {
@@ -1563,5 +1611,7 @@ function printTable3() {
   printWindow3.document.close();
   printWindow3.print();
 }
+
+
 
 </script>

@@ -183,10 +183,33 @@ $_SESSION['fittername']=$fittername;
             barcodeInput.value = event.data; // Set the input value to the scanned barcode data
             document.getElementById("myForm").submit(); // Submit the form
         }
+		        function submitForm(action) {
+            document.getElementById("myForm").action = action;
+            document.getElementById("myForm").submit();
+        }
+
 
         document.addEventListener("DOMContentLoaded", function() {
             window.addEventListener("message", handleBarcodeInput);
         });
+		  function shiftFocus() {
+    // Get the current input element
+    var currentInput = document.activeElement;
+
+    // Check if the current input is a select dropdown
+    if (currentInput.tagName === 'SELECT') {
+      // Find the index of the current input in the form's elements array
+      var currentIndex = Array.prototype.indexOf.call(document.forms[0].elements, currentInput);
+
+      // Get the next input element
+      var nextInput = document.forms[0].elements[currentIndex + 1];
+
+      // Shift the focus to the next input element if it exists
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }
+  }
     </script>
 </head>
 <body>
@@ -221,11 +244,12 @@ if ($flag) {
             <div class=\"form-cube\">
                 <h2>Hello " . $fittername . "</h2><br>
                 <label for=\"fitter\">Sales Order:</label>
-                <select id=\"jobid\" name=\"jobid\" $inputDisabled>" . $options . "</select>
+                <select id=\"jobid\" name=\"jobid\" $inputDisabled onchange=\"shiftFocus()\">" . $options . "</select>
                 <h3 id=\"heading\">Scan/Enter the PartNo of the Item</h3>
                 <div class=\"input-field " . ($inputDisabled ? 'disabled-input' : '') . "\" id=\"idFld\">
                     <input type=\"text\" id=\"barcodeInput\" name=\"barcode\" autofocus $inputDisabled>
                 </div>
+				<button id=\"fill-blue\" class=\"used\" type=\"button\" onclick=\"submitForm('userusage.php')\">Check Usage</button><p> You can check the parts used by you under this sales order</p><br><br>
                 <center><a id=\"\" class=\"ri-logout-circle-line\" href=\"userlogin.html\">Logout</a></center>
             </div>
         </div>

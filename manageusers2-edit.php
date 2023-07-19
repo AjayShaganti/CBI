@@ -111,15 +111,15 @@ echo " 		<div class=\"form-cube1\">
        						 .$options2."
 						</select>
 						<label for=\"usage\">Kanban Stock:</label>
-						<select name=\"using\" ><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
+						<select name=\"kanban\" ><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
 						</select>
 												</select>
 						<label for=\"usage\">Cables:</label>
-						<select name=\"ordering\" ><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
+						<select name=\"cables\" ><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
 						</select>
 												</select>
 						<label for=\"usage\">HYMOD/TopHat:</label>
-						<select name=\"receiving\"><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
+						<select name=\"hymod\"><option value=\"\"></option><option value=\"1\">Allow</option><option value=\"0\">Deny</option>
 						</select>
 
 					<label for=\"password\">New Password:</label>

@@ -8,6 +8,7 @@ $Limit = $_SESSION['Limit'];
 $Category = $_SESSION['Category'];
 $jobid = $_SESSION['jobid'];
 $ppu = $_SESSION['ppu'];
+$BinLocation = $_SESSION['BinLocation'];
 
 $msg = '';
 $flag = 0;
@@ -138,14 +139,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 	<?php    // Inserting transaction record
     //$insertQuery = "INSERT INTO transactions (jobid, fittername, partno, category, quantity,netquantity, scandate, type) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
-	$insertQuery = "INSERT INTO transactions (jobid, fittername, partno,partname,PricePerUnit, category, quantity, netquantity, scandate, type) VALUES (?, ?, ?, ?,?, ?,?, ?, ?, ?)";
+	$insertQuery = "INSERT INTO transactions (jobid, fittername,BinLocation, partno,partname,PricePerUnit, category, quantity, netquantity, scandate, type) VALUES (?, ?, ?, ?,?,?, ?,?, ?, ?, ?)";
 	$insertStmt = mysqli_prepare($conn, $insertQuery);
 	
 	if ($insertStmt) {
 		$category = $_SESSION['Category'];
 		$type = 'restored';
 	
-		mysqli_stmt_bind_param($insertStmt, "sssssssiss", $jobid, $fittername, $partNo,$PartName,$ppu, $category, $effectedquantity, $QuantityLeft, $currentDateTime, $type);
+		mysqli_stmt_bind_param($insertStmt, "ssssssssiss", $jobid, $fittername,$BinLocation, $partNo,$PartName,$ppu, $category, $effectedquantity, $QuantityLeft, $currentDateTime, $type);
 		mysqli_stmt_execute($insertStmt);
 		mysqli_stmt_close($insertStmt);
 	} else {
@@ -168,6 +169,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <input type="text" id="barcodeInput" name="barcode" autofocus>
                     <br>
                     <br></div>
+					<button id="fill-blue" class="used" type="button" onclick="submitForm('userusage.php')">Check Usage</button><p> You can check the parts used by you under this sales order</p><br><br>
                     <center><a id="" class="ri-logout-circle-line" href="userlogin.html">Logout</a></center>
                 </form>
             </div>

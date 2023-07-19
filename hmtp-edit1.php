@@ -151,7 +151,7 @@ label {
 				
 								echo "	<div class=\"form-cube\"> 
 								<h1> Updating an item from HYMOD/Top-Hat list</h1><br>
-								<form method=\"post\" id=\"myForm\" action=\"hmtp-update2.php\">
+								<form method=\"post\" id=\"myForm\" action=\"hmtp-edit2.php\">
 									<label> Bin Location: </label>
 									<div class=\"input-field\" id=\"idFld1\"> 
 									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
@@ -203,6 +203,48 @@ label {
 
 
 
+	</div>
+    </div>
+	    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+      <label for="tab-4" class="tab-label">CONSUMABLES</label>
+      <div id="tab4" class="tab-content">
+<?php
+
+				
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+									<h1> Manage Consumables Data</h1>
+											
+							<br><br><a href=\"consumables-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"consumables-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"consumables-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
+?>
+	</div>
+    </div>
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+      <label for="tab-5" class="tab-label">LABELS</label>
+      <div id="tab5" class="tab-content">
+<?php
+
+				
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+									<h1> Manage Labels Data</h1>
+											
+							<br><br><a href=\"labels-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"labels-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"labels-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
+?>
 	</div>
     </div>
   </div>

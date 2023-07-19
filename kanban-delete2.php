@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'common.php';
 ?>
 <style>
@@ -41,6 +42,14 @@ include 'common.php';
 }
 #tab3 {
 	margin-left:-21.55%;
+width:100%;
+}
+#tab4 {
+	margin-left:-28.0%;
+width:100%;
+}
+#tab5 {
+	margin-left:-37.8%;
 width:100%;
 }
 #lbt{
@@ -112,9 +121,18 @@ label {
 	font-weight:bold;
 
 }
+#rad1 {
+	padding-top:4%;
+	margin-bottom:-12.35%;
+	margin-left:-20%;
+	//z-index:10;
+}
 
-h3 {
-	color:red;
+#rad2 {
+	//padding-top:2%;
+	margin-top:-8.35%;
+	margin-left:20%;
+	//z-index:10;
 }
 
 
@@ -147,9 +165,30 @@ h3 {
 <div class="wrapper">
   <div class="tabs">
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-1"  class="tab-switch">
       <label for="tab-1" class="tab-label">HYMOD & TOP HAT</label>
       <div id="tab1" class="tab-content">
+<?php
+
+				
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage HYMOD/Top-Hat Data</h1>
+											
+							<br><br><a href=\"hmtp-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"hmtp-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"hmtp-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
+?>
+</div>
+    </div>
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" checked>
+      <label for="tab-2" class="tab-label">KANBAN STOCK</label>
+      <div id="tab2" class="tab-content">
 <?php
 include 'connection.php';
 
@@ -157,93 +196,70 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$msg = ""; // Initialize the message variable
+$flag=0;
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $binlocation = $_POST['binlocation'];
-	$partname = $_POST['partname'];
-	$partno = $_POST['partno'];
-	$supplier = $_POST['supplier'];
-	$max = $_POST['max'];
-	$min = $_POST['min'];
-	$purchaseprice = $_POST['purchaseprice'];
-	$units = $_POST['units'];
-	$quantity = $_POST['quantity'];
-	$category = $_POST['category'];
-	$limit = $_POST['limit'];
+	$_SESSION['binlocation'] = $binlocation;
 
-    $query = "INSERT INTO `tophathymod` (`BinLocation`, `PartName`, `PartNo`, `Supplier`, `Max`, `Min`, `PurchasePrice`, `Units`, `Quantity`, `Category`, `Limit`) VALUES ('$binlocation', '$partname', '$partno', '$supplier', '$max', '$min', '$purchaseprice', '$units', '$quantity', '$category', '$limit')";
-
+    $query = "SELECT * FROM stock WHERE BinLocation = ?";
+    
+    // Prepare the statement
+    $stmt = mysqli_prepare($conn, $query);
+    
+    // Bind the parameter
+    mysqli_stmt_bind_param($stmt, "s", $binlocation);
+    
     // Execute the query or throw an exception
-    try{if (mysqli_query($conn, $query)) {
-      $msg="Data for ".$binlocation." added successfully.";
-    } else {
-      throw new Exception(mysqli_error($conn));
-    }
-	}
-   catch (Exception $e) {
-   $msg="Error: " . $e->getMessage();
-  }
+    try {
+        if (mysqli_stmt_execute($stmt)) {
+            // Fetch the data
+            $result = mysqli_stmt_get_result($stmt);
+            
+            // Check if any rows were returned
+            if ($row = mysqli_fetch_assoc($result)) {
+                // Output the fetched data
+                $msg = "This Process cannot be undone.<br><br>";
+                $msg .= "<strong>Bin Location:</strong> " . $row['BinLocation'] . "<br>";
+                $msg .= "<strong>Part Name:</strong> " . $row['PartName'] . "<br>";
+                $msg .= "<strong>Part No:</strong> " . $row['PartNo'] . "<br><br>";
+				$flag=1;
 
-				
-								echo "	<div class=\"form-cube\"><h3 style=\"color:red;\">".$msg."</h3><br>
-								<h1> Adding new item to HYMOD/Top-Hat list</h1><br>
-								<form method=\"post\" id=\"myForm\" action\"hmtp-add2.php\">
+            } else {
+                $msg = "No data found for ".$binlocation.".";
+				$flag=0;
+            }
+        } else {
+            throw new Exception(mysqli_error($conn));
+			$flag=0;
+        }
+    } catch (Exception $e) {
+        $msg = "Error: " . $e->getMessage();
+    }
+    
+    // Close the statement
+    mysqli_stmt_close($stmt);
+}
+
+								if($flag){
+								echo "	<div class=\"form-cube\"><br>
+								<form method=\"post\" id=\"myForm\" action=\"kanban-delete3.php\">
+									<h3>".$msg."</h3>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >Delete</button>
+								</form></div>";
+								}
+								else {
+									echo "	<div class=\"form-cube\"> 
+								<h2>".$msg."</h2><br>
+								<form method=\"post\" id=\"myForm\" action=\"kanban-delete2.php\">
 									<label> Bin Location: </label>
 									<div class=\"input-field\" id=\"idFld1\"> 
 									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
-									<label> Description: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"partname\"  name=\"partname\" required></div>
-									<label> Part Number: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
-									<label> Supplier: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
-									<label> Max: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"number\" id=\"max\"  name=\"max\"></div>
-									<label> Min: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"number\" id=\"min\"  name=\"min\"></div>
-									<label> Purchase Price: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"purchaseprice\"  name=\"purchaseprice\"></div>
-									<label> Price for No of Units: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"units\"  name=\"units\"></div>
-									<label>Available Stock: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"quantity\"  name=\"quantity\"></div>
-									<label >Category:</label><br>
-									<select name=\"category\" id=\"category\" >
-									<option value=\"HYMOD\">HYMOD</option>
-									<option value=\"Top Hat\">Top Hat</option></select><br>
-									<label> Limit: </label>
-									<div class=\"input-field\" id=\"idFld\"> 
-									<input type=\"text\" id=\"limit\"  name=\"limit\"></div><br>
-									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >Fetch Data</button>
 								</form></div>";
-?>
-</div>
-    </div>
-    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-      <label for="tab-2" class="tab-label">KANBAN STOCK</label>
-      <div id="tab2" class="tab-content">
-<?php
-
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-								<h1> Manage Kanban Data</h1>
-											
-							<br><br><a href=\"kanban-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
-
-							<a href=\"kanban-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"kanban-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
+								}
+									
 ?>
 </div>
     </div>
@@ -266,12 +282,9 @@ error_reporting(E_ALL);
 							  
 								</form></center>";
 ?>
-
-
-
 	</div>
     </div>
-	    <div class="tab">
+    <div class="tab">
       <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
@@ -314,7 +327,8 @@ error_reporting(E_ALL);
 	</div>
     </div>
   </div>
-</div><?php include 'loading.php'; ?>
+</div>
 <script>
 
 </script>
+<?php include 'loading.php'; ?>

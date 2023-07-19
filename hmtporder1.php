@@ -101,7 +101,7 @@ if ($flag) {
         <h4><strong>PartName: </strong> " . $PartName . "</h4><br>
         <h4><strong>Max Stock (No's): </strong> " . $Max . "</h4><br>
         <h4><strong>Min Stock (No's): </strong> " . $Min . "</h4><br>
-        <h1 id=\"heading\">Enter Quantity to be Ordered/Received</h1>
+        <h1 id=\"heading\">Enter Quantity</h1>
         <div class=\"input-field\" id=\"idFld\">
           <input type=\"number\" id=\"quantity\" name=\"effectedquantity\" autofocus>
         </div>

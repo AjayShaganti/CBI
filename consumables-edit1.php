@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'common.php';
 ?>
 <style>
@@ -41,6 +42,14 @@ include 'common.php';
 }
 #tab3 {
 	margin-left:-21.55%;
+width:100%;
+}
+#tab4 {
+	margin-left:-28.0%;
+width:100%;
+}
+#tab5 {
+	margin-left:-37.8%;
 width:100%;
 }
 #lbt{
@@ -112,6 +121,19 @@ label {
 	font-weight:bold;
 
 }
+#rad1 {
+	padding-top:4%;
+	margin-bottom:-12.35%;
+	margin-left:-20%;
+	//z-index:10;
+}
+
+#rad2 {
+	//padding-top:2%;
+	margin-top:-8.35%;
+	margin-left:20%;
+	//z-index:10;
+}
 
 
 
@@ -143,61 +165,31 @@ label {
 <div class="wrapper">
   <div class="tabs">
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-1"  class="tab-switch">
       <label for="tab-1" class="tab-label">HYMOD & TOP HAT</label>
       <div id="tab1" class="tab-content">
 <?php
 
 				
-								echo "	<div class=\"form-cube\"> 
-								<h1> Adding new item to HYMOD/Top-Hat list</h1><br>
-								<form method=\"post\" id=\"myForm\" action=\"hmtp-add2.php\">
-									<label> Bin Location: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
-									<label> Description: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"partname\"  name=\"partname\" required></div>
-									<label> Part Number: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
-									<label> Supplier: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
-									<label> Max: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"number\" id=\"max\"  name=\"max\"></div>
-									<label> Min: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"number\" id=\"min\"  name=\"min\"></div>
-									<label> Purchase Price: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"purchaseprice\"  name=\"purchaseprice\"></div>
-									<label> Price for No of Units: </label>
-									<div class=\"input-field\" id=\"idFld2\"> 
-									<input type=\"text\" id=\"units\"  name=\"units\"></div>
-									<label>Available Stock: </label>
-									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"quantity\"  name=\"quantity\"></div>
-									<label >Category:</label><br>
-									<select name=\"category\" id=\"category\" >
-									<option value=\"HYMOD\">HYMOD</option>
-									<option value=\"Top Hat\">Top Hat</option></select><br>
-									<label> Limit: </label>
-									<div class=\"input-field\" id=\"idFld\"> 
-									<input type=\"text\" id=\"limit\"  name=\"limit\"></div><br>
-									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
-								</form></div>";
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage HYMOD/Top-Hat Data</h1>
+											
+							<br><br><a href=\"hmtp-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"hmtp-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"hmtp-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
 ?>
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" >
       <label for="tab-2" class="tab-label">KANBAN STOCK</label>
       <div id="tab2" class="tab-content">
 <?php
-
-				
 								echo "
 												
 								<center><form method=\"post\" id=\"myForm\">
@@ -213,14 +205,11 @@ label {
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch" >
       <label for="tab-3" class="tab-label">CABLES</label>
       <div id="tab3" class="tab-content">
-<?php
-
-				
-								echo "
-												
+<?php			
+							echo "
 								<center><form method=\"post\" id=\"myForm\">
 									<h1> Manage Cables Data</h1>
 											
@@ -231,29 +220,21 @@ label {
 							  
 								</form></center>";
 ?>
-
-
-
 	</div>
     </div>
-	    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" checked>
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
 <?php
-
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-									<h1> Manage Consumables Data</h1>
-											
-							<br><br><a href=\"consumables-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
-
-							<a href=\"consumables-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"consumables-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
+								echo "	<div class=\"form-cube\"> 
+								<h1> Updating an item from Consumables list</h1><br>
+								<form method=\"post\" id=\"myForm\" action=\"consumables-edit2.php\">
+									<label> Bin Location: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >Fetch Details</button>
+								</form></div>";
 ?>
 	</div>
     </div>

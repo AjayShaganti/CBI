@@ -109,10 +109,32 @@ color:red;
   opacity: 1;
   transition: all 0.35s;
 }
-#filters {
-	 margin-left:-0.5%;
 
-	}
+.form-cube {
+	width:40%;
+	//position:relative;
+	
+}
+
+label {
+	font-weight:bold;
+
+}
+#rad1 {
+	padding-top:4%;
+	margin-bottom:-12.35%;
+	margin-left:-20%;
+	//z-index:10;
+}
+
+#rad2 {
+	//padding-top:2%;
+	margin-top:-8.35%;
+	margin-left:20%;
+	//z-index:10;
+}
+
+
 
 /* Responsive Styling */
 @media screen and (max-width: 768px) {
@@ -132,9 +154,9 @@ color:red;
   }
 
   .tab-content {
-    position: static;
+    position: relative;
     height: auto;
-    margin-right: 0;
+    margin-left: 5;
     padding: 1em;
   }
 }
@@ -142,33 +164,31 @@ color:red;
 <div class="wrapper">
   <div class="tabs">
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-1"  class="tab-switch">
       <label for="tab-1" class="tab-label">HYMOD & TOP HAT</label>
-
       <div id="tab1" class="tab-content">
 <?php
 
 				
-								echo "			
-								<form method=\"post\" id=\"myForm\">
-								<center><h1> Manage Hymod&Tophat Data</h1>
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage HYMOD/Top-Hat Data</h1>
 											
 							<br><br><a href=\"hmtp-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
 
 							<a href=\"hmtp-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
 							<a href=\"hmtp-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
 							  
-								</form>";
+								</form></center>";
 ?>
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" >
       <label for="tab-2" class="tab-label">KANBAN STOCK</label>
       <div id="tab2" class="tab-content">
 <?php
-
-				
 								echo "
 												
 								<center><form method=\"post\" id=\"myForm\">
@@ -184,14 +204,11 @@ color:red;
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch" >
       <label for="tab-3" class="tab-label">CABLES</label>
       <div id="tab3" class="tab-content">
-<?php
-
-				
-								echo "
-												
+<?php			
+							echo "
 								<center><form method=\"post\" id=\"myForm\">
 									<h1> Manage Cables Data</h1>
 											
@@ -202,13 +219,10 @@ color:red;
 							  
 								</form></center>";
 ?>
-
-
-
 	</div>
     </div>
-	    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" >
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
 <?php
@@ -229,29 +243,82 @@ color:red;
 	</div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch" checked>
       <label for="tab-5" class="tab-label">LABELS</label>
       <div id="tab5" class="tab-content">
-<?php
+	  	  <?php
+include 'connection.php';
 
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-									<h1> Manage Labels Data</h1>
-											
-							<br><br><a href=\"labels-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-							<a href=\"labels-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"labels-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
+    $binlocation = $_POST['binlocation'];
+	$partname = $_POST['partname'];
+	$partno = $_POST['partno'];
+	$supplier = $_POST['supplier'];
+	$Max = $_POST['Max'];
+	$Min = $_POST['Min'];
+	$OrderUnitSpec = $_POST['OrderUnitSpec'];
+    $PackQty = $_POST['PackQty'];
+	$PurchasePrice = $_POST['PurchasePrice'];
+	$Quantity = $_POST['Quantity'];
+
+    $query = "INSERT INTO `labels`(`BinLocation`, `PartName`, `PartNo`, `Supplier`, `Max`, `Min`,`OrderUnitSpec`, `PackQty`, `PurchasePrice`,`Quantity`, `LastUpdated`, `Category`) VALUES ('$binlocation', '$partname', '$partno', '$supplier', '$Max', '$Min', '$OrderUnitSpec', '$PackQty', '$PurchasePrice','$Quantity',Now(),'Labels' )";
+
+    // Execute the query or throw an exception
+    try{if (mysqli_query($conn, $query)) {
+      $msg="Data for ".$binlocation." added successfully.";
+    } else {
+      throw new Exception(mysqli_error($conn));
+    }
+	}
+   catch (Exception $e) {
+   $msg="Error: " . $e->getMessage();
+  }
+
+								echo "	<div class=\"form-cube\"><h3 style=\"color:red;\">".$msg."</h3><br>
+								<h1> Adding new item to Labels</h1><br><br>
+								<form method=\"post\" id=\"myForm\" action=\"labels-add2.php\">
+									<label> Bin Location: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
+									<label> Description: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"text\" id=\"partname\"  name=\"partname\" required></div>
+									<label> Part Number: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
+									<label>Supplier: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
+									<label> Max: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"number\" id=\"max\"  name=\"Max\"></div>
+									<label> Min: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"number\" id=\"min\"  name=\"Min\"></div>
+									<label> Order Unit Spec: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"OrderUnitSpec\" required></div>
+									<label> Pack Qty: </label>
+									<div class=\"input-field\" id=\"idFld2\"> 
+									<input type=\"number\" id=\"partname\"  name=\"PackQty\" required></div>
+									<label> Purchase Price: </label>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"text\" id=\"partno\"  name=\"PurchasePrice\" required></div>
+									<label>Quantity: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"number\" id=\"supplier\"  name=\"Quantity\"></div>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
+								</form></div>";
 ?>
+
 	</div>
     </div>
   </div>
 </div>
-<?php include 'loading.php'; ?>
 <script>
 
 </script>
+<?php include 'loading.php'; ?>

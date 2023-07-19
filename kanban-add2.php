@@ -43,6 +43,14 @@ include 'common.php';
 	margin-left:-21.55%;
 width:100%;
 }
+#tab4 {
+	margin-left:-28.0%;
+width:100%;
+}
+#tab5 {
+	margin-left:-37.8%;
+width:100%;
+}
 #lbt{
 	padding-top: 0px;
 
@@ -112,9 +120,18 @@ label {
 	font-weight:bold;
 
 }
+#rad1 {
+	padding-top:4%;
+	margin-bottom:-12.35%;
+	margin-left:-20%;
+	//z-index:10;
+}
 
-h3 {
-	color:red;
+#rad2 {
+	//padding-top:2%;
+	margin-top:-8.35%;
+	margin-left:20%;
+	//z-index:10;
 }
 
 
@@ -147,9 +164,30 @@ h3 {
 <div class="wrapper">
   <div class="tabs">
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-1" class="tab-switch">
       <label for="tab-1" class="tab-label">HYMOD & TOP HAT</label>
       <div id="tab1" class="tab-content">
+<?php
+
+				
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage HYMOD/Top-Hat Data</h1>
+											
+							<br><br><a href=\"hmtp-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"hmtp-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"hmtp-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
+?>
+</div>
+    </div>
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" checked>
+      <label for="tab-2" class="tab-label">KANBAN STOCK</label>
+      <div id="tab2" class="tab-content">
 <?php
 include 'connection.php';
 
@@ -157,20 +195,20 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
     $binlocation = $_POST['binlocation'];
 	$partname = $_POST['partname'];
 	$partno = $_POST['partno'];
-	$supplier = $_POST['supplier'];
+	$refill = $_POST['refill'];
 	$max = $_POST['max'];
 	$min = $_POST['min'];
 	$purchaseprice = $_POST['purchaseprice'];
 	$units = $_POST['units'];
-	$quantity = $_POST['quantity'];
-	$category = $_POST['category'];
+	$quantity1 = $_POST['quantity1'];
+	$quantity2 = $_POST['quantity2'];
+	$rdstock = $_POST['3rdstock'];
 	$limit = $_POST['limit'];
 
-    $query = "INSERT INTO `tophathymod` (`BinLocation`, `PartName`, `PartNo`, `Supplier`, `Max`, `Min`, `PurchasePrice`, `Units`, `Quantity`, `Category`, `Limit`) VALUES ('$binlocation', '$partname', '$partno', '$supplier', '$max', '$min', '$purchaseprice', '$units', '$quantity', '$category', '$limit')";
+    $query = "INSERT INTO `stock`(`BinLocation`, `PartName`, `PartNo`, `RefillQty`, `Max`, `Min`, `PurchasePrice`, `Units`, `BF16Back`, `3rdStock`, `LastUpdated`, `Category`, `Limit`, `special`) VALUES  ('$binlocation', '$partname', '$partno', '$refill', '$max', '$min', '$purchaseprice', '$units', '$quantity1', '$quantity2',Now(),'Kanban Stock', '$limit','$rdstock' )";
 
     // Execute the query or throw an exception
     try{if (mysqli_query($conn, $query)) {
@@ -185,8 +223,8 @@ error_reporting(E_ALL);
 
 				
 								echo "	<div class=\"form-cube\"><h3 style=\"color:red;\">".$msg."</h3><br>
-								<h1> Adding new item to HYMOD/Top-Hat list</h1><br>
-								<form method=\"post\" id=\"myForm\" action\"hmtp-add2.php\">
+								<h1> Adding new item to Kanban Stock</h1><br>
+								<form method=\"post\" id=\"myForm\" action=\"kanban-add2.php\">
 									<label> Bin Location: </label>
 									<div class=\"input-field\" id=\"idFld1\"> 
 									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
@@ -196,9 +234,9 @@ error_reporting(E_ALL);
 									<label> Part Number: </label>
 									<div class=\"input-field\" id=\"idFld3\"> 
 									<input type=\"text\" id=\"partno\"  name=\"partno\" required></div>
-									<label> Supplier: </label>
+									<label> Refill Qty: </label>
 									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"supplier\"  name=\"supplier\"></div>
+									<input type=\"text\" id=\"supplier\"  name=\"refill\"></div>
 									<label> Max: </label>
 									<div class=\"input-field\" id=\"idFld2\"> 
 									<input type=\"number\" id=\"max\"  name=\"max\"></div>
@@ -211,39 +249,24 @@ error_reporting(E_ALL);
 									<label> Price for No of Units: </label>
 									<div class=\"input-field\" id=\"idFld2\"> 
 									<input type=\"text\" id=\"units\"  name=\"units\"></div>
-									<label>Available Stock: </label>
+									<label>BF16 Back Stock: </label>
 									<div class=\"input-field\" id=\"idFld3\"> 
-									<input type=\"text\" id=\"quantity\"  name=\"quantity\"></div>
-									<label >Category:</label><br>
-									<select name=\"category\" id=\"category\" >
-									<option value=\"HYMOD\">HYMOD</option>
-									<option value=\"Top Hat\">Top Hat</option></select><br>
+									<input type=\"text\" id=\"quantity1\"  name=\"quantity1\"></div>
+									<label>3rd Stock: </label><em><h5> Enter 0 if 3rd Stock Not Available</h5></em>
+									<div class=\"input-field\" id=\"idFld3\"> 
+									<input type=\"text\" id=\"quantity2\"  name=\"quantity2\"></div>
 									<label> Limit: </label>
 									<div class=\"input-field\" id=\"idFld\"> 
-									<input type=\"text\" id=\"limit\"  name=\"limit\"></div><br>
+									<input type=\"text\" id=\"limit\"  name=\"limit\"></div>
+									<label>3rd Stock Available:</label><br>
+									<div id=\"rad1\">
+									<input type=\"radio\" id=\"html\" name=\"3rdstock\" value=\"0\" checked>
+									<label for=\"html\">Yes</label></div>
+									<div id=\"rad2\">
+									<input type=\"radio\" id=\"css\" name=\"3rdstock\" value=\"1\">
+									<label for=\"css\">No</label></div><br>
 									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >ADD</button>
 								</form></div>";
-?>
-</div>
-    </div>
-    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch">
-      <label for="tab-2" class="tab-label">KANBAN STOCK</label>
-      <div id="tab2" class="tab-content">
-<?php
-
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-								<h1> Manage Kanban Data</h1>
-											
-							<br><br><a href=\"kanban-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
-
-							<a href=\"kanban-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"kanban-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
 ?>
 </div>
     </div>
@@ -266,12 +289,9 @@ error_reporting(E_ALL);
 							  
 								</form></center>";
 ?>
-
-
-
 	</div>
     </div>
-	    <div class="tab">
+    <div class="tab">
       <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
@@ -314,7 +334,8 @@ error_reporting(E_ALL);
 	</div>
     </div>
   </div>
-</div><?php include 'loading.php'; ?>
+</div>
 <script>
 
 </script>
+<?php include 'loading.php'; ?>

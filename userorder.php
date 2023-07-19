@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $BinLocation = $row['BinLocation'];
+			$_SESSION['BinLocation'] = $BinLocation;
             $PartName = $row['PartName'];
 			$_SESSION['PartName'] = $PartName;
             $PartNo = $row['PartNo'];
@@ -254,8 +255,9 @@ if ($flag) {
         <div class=\"signup-container\">
             <!-- Box container containing elements -->
             <br>  
-            <h2 style=\"text-align:center;\">$msg</h2>  
+            
             <div class=\"form-cube\">
+			<h2 style=\"text-align:center;\">$msg</h2>  
                 <h2>Hello $fittername</h2><br>
                 <label for=\"fitter\">Sales Order:</label>
                 <select id=\"jobid\" name=\"jobid\">$options</select>
@@ -263,8 +265,8 @@ if ($flag) {
                 <div class=\"input-field\" id=\"idFld\">
                     <input type=\"text\" id=\"barcodeInput\" name=\"barcode\" autofocus>
                 </div>
-            </div>
-            <center><a id=\"\" class=\"ri-logout-circle-line\" href=\"userlogin.html\">Logout</a></center>      
+            
+            <center><a id=\"\" class=\"ri-logout-circle-line\" href=\"userlogin.html\">Logout</a></center>      </div>
         </div>
     </form>
     ";
