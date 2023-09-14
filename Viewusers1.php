@@ -39,7 +39,7 @@ if($conn)
 			{if($record)
 				{
 				echo"<center><h2 id=\"lbh\" >USERS/FITTERS</h2><br><br><br>";
-				echo"<table id=\"lbt\" border='2'><tr><th>Fitter Name</th><th>Password</th><th>Kanban Stock</th><th>Cables</th><th>HYMOD/TopHat</th><th>Last Updated</tr>";
+				echo"<table id=\"lbt\" border='2'><tr><th>Fitter Name</th><th>Password</th><th>Kanban/Consumable/Lables</th><th>Cables</th><th>HYMOD/TopHat</th><th>Last Updated</tr>";
 				while($record)
 					{  if($record['kanban']){$a1='Allowed';}else{$a1='Not Allowed';}
 						if($record['cables']){$a2='Allowed';}else{$a2='Not Allowed';}

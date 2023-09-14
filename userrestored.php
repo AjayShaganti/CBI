@@ -95,11 +95,125 @@ while ($row = mysqli_fetch_assoc($result)) {
         #header {
             /* background-image: url('path/to/your/image.jpg'); */
         }
-				button {
-  width: 120px; /* Set the desired width */
-  height: 40px; /* Set the desired height */
-  font-size: 25px; /* Set the desired font size */
-}
+
+        body {
+            font-family: 'Jost', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            background-color: #007bff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .white-txt {
+            color: #fff;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-cube {
+            width: 90%;
+            max-width: 400px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-cube h2,
+        .form-cube h3 {
+            color: red;
+            text-align: center;
+            margin: 0 0 20px 0;
+        }
+
+        .form-cube h4 {
+            margin: 0;
+        }
+
+        .form-cube label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .form-cube select,
+        .form-cube input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-cube .input-field {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-cube .input-field i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+            color: #888;
+        }
+
+        .form-cube button {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .ri-logout-circle-line {
+            display: block;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .form-cube {
+                width: 100%;
+                max-width: 100%;
+                padding: 10px;
+            }
+
+            .form-cube h2,
+            .form-cube h3 {
+                font-size: 20px;
+            }
+
+            .form-cube h4,
+            .form-cube label,
+            .form-cube select,
+            .form-cube input[type="text"] {
+                font-size: 14px;
+            }
+
+            .ri-logout-circle-line {
+                font-size: 20px;
+            }
+        }
     </style>
     <script type="text/javascript">
         function handleBarcodeInput(event) {
@@ -124,6 +238,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 				alert('Please enter a valid quantity.');
 			}
 			}
+					       function submitForm(action) {
+            document.getElementById("myForm").action = action;
+            document.getElementById("myForm").submit();
+        }
 
     </script>
 </head>
@@ -169,7 +287,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <input type="text" id="barcodeInput" name="barcode" autofocus>
                     <br>
                     <br></div>
-					<button id="fill-blue" class="used" type="button" onclick="submitForm('userusage.php')">Check Usage</button><p> You can check the parts used by you under this sales order</p><br><br>
+					<button id="fill-blue" class="used" type="button" onclick="submitForm('userusage.php')">Check Usage</button><br><p> You can check the parts used by you under this sales order</p><br>
                     <center><a id="" class="ri-logout-circle-line" href="userlogin.html">Logout</a></center>
                 </form>
             </div>

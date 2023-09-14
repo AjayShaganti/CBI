@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'connection.php';
 
 
@@ -6,8 +7,8 @@ $msg = '';
 $fittername = 'NA';
 $flag = 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userpin = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $userpin = $_GET['password'];
     $query = "SELECT fittername FROM fitters WHERE password='$userpin'";
     $result = mysqli_query($conn, $query);
 
@@ -25,8 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $flag = 0;
     }
 }
-session_start();
+
 $_SESSION['fittername']=$fittername;
+$_SESSION['password']=$userpin;
 
 
 ?>
@@ -256,7 +258,7 @@ if ($flag) {
     </form> ";
 } else {
     echo "
-    <form method=\"post\" id=\"myForm\" action=\"validateuser.php\">
+    <form method=\"get\" id=\"myForm\" action=\"validateuser.php\">
         <br><br>
         <div class=\"signup-container\">
             <!-- Box container containing elements --> <br>             

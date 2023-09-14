@@ -1,29 +1,26 @@
 <?php
 include 'connection.php';
 
-// Retrieve the values sent from the JavaScript code
-$partNo = $_POST['partNo'];
-$status = $_POST['status'];
-
-$response = '';
-
 try {
     if ($conn) {
         // Prepare the SQL statement with placeholders
-        $updateQuery = "UPDATE reorderhmtp SET Status = ?, lastupdated = ? WHERE PartNo = ?";
-        $statement = mysqli_prepare($conn, $updateQuery);
+        $deleteQuery = "DELETE FROM reorderhmtp WHERE status = ?";
+        $statement = mysqli_prepare($conn, $deleteQuery);
 
         if ($statement) {
-            // Bind the parameters to the statement
-            mysqli_stmt_bind_param($statement, 'sss', $status, date('Y-m-d H:i:s'), $partNo);
+            // Define the status value for deletion
+            $statusToDelete = "To be Ordered";
+
+            // Bind the parameter to the statement
+            mysqli_stmt_bind_param($statement, 's', $statusToDelete);
 
             // Execute the statement
             $result = mysqli_stmt_execute($statement);
 
             if ($result) {
-                $response = "Status has been updated to $status for Part No: $partNo";
+                $response = "Rows with status 'To be Ordered' have been refreshed.";
             } else {
-                throw new Exception("<h3>Failed to update</h3>");
+                throw new Exception("<h3>Failed to delete</h3>");
             }
 
             // Close the statement
@@ -32,7 +29,7 @@ try {
             throw new Exception("<h3>Failed to prepare statement</h3>");
         }
     } else {
-        throw new Exception("<h3>Connection failed: " . mysqli_connect_error() . "</h3>");
+        throw new Exception("<h3>Connection failed: " . mysqli_connect_error(). "</h3>");
     }
 } catch (Exception $e) {
     $response = "Something went wrong! Please try again. If the issue persists, please contact the administrator.";

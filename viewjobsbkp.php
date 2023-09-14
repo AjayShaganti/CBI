@@ -1,110 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Applicant login page for CorpU">
-  <meta name="keywords" content="CorpU, recruitment, IT">
-  <meta name="author" content="Group 23">
-  <title>CBi &#8211; Stock Management System</title>
-  <link rel="stylesheet" type="text/css" href="styles/style.css">
-  <link rel="icon" type="image/x-icon" href="images/game-fill.png">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/d7376949ab.js" crossorigin="anonymous"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    table {
-      width: 70%;
-      border-collapse: collapse;
-    }
-
-    table,
-    th,
-    td {
-      text-align: center;
-      border: 1px solid black;
-    }
-
-    thead {
-      background-color: #FFA6A7;
-      color: #ffffff;
-    }
-
-    th {
-      text-align: center;
-      height: 50px;
-    }
-
-    tbody tr:nth-child(odd) {
-      background: #ffffff;
-    }
-
-    tbody tr:nth-child(even) {
-      background: #FFC6C7;
-    }
-
-    #filters {
-      width: 20%;
-      margin-left: 3%;
-    }
-
-    #output {
-      margin-left: 20%;
-      margin-top: -25%;
-      padding-bottom: 10%;
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <nav>
-      <div class="corpu-logo"><img src="images/cbi-logo.png" alt="CorpU logo"></div>
-      <input type="checkbox" id="burger">
-      <label for="burger" class="burgerbtn">
-        <i class="ri-menu-line"></i>
-      </label>
-      <ul>
-        <li><a href="Dashboard.html" id="select">
-            <p>Dashboard</p>
-          </a></li>
-        <li><a href="Stock.php" id="select">
-            <p>Stock</p>
-          </a></li>
-        <li><a href="updatebybin1.php" id="select">
-            <p>Update by BinLocation</p>
-          </a></li>
-        <li><a href="updatebypartno1.php" id="select">
-            <p>Update by PartNumber</p>
-          </a></li>
-        <li><a href="viewjobs1.php" id="select">
-            <p>View Jobs</p>
-          </a></li>
-        <li><a href="managejobs1.php" id="select">
-            <p>Manage Jobs</p>
-          </a></li>
-        <li><a href="Viewusers1.php" id="select">
-            <p>View Users</p>
-          </a></li>
-        <li><a href="viewjobs1.php" id="select">
-            <p>Manage Users</p>
-          </a></li>
-        <li><a href="updatestock1.php" id="select">
-            <p>Update Stock Data</p>
-          </a></li>
-      </ul>
-    </nav>
-  </header>
-  <div id="full-container">
-    <section id="page-top-2">
-      <h4 class="sub-header white-txt">Stock Management System</h4>
-      <br>
-      <p class="white-txt center">Welcome</p>
-    </section>
-
+<?php include 'common.php'; ?>
+<style>
+#output{
+	margin-top:-40%;
+	}
+</style>
     <div id="filters">
       <label for="project_manager">Project Manager:</label>
       <select id="project_manager">
@@ -135,6 +34,7 @@
         ?>
       </select>
 
+
       <label for="status">Status:</label>
       <select id="status">
         <option value="">All</option>
@@ -144,7 +44,35 @@
         $result = mysqli_query($conn, $query);
         while ($row = mysqli_fetch_assoc($result)) {
           $status = $row['currentstate'];
-          echo "<option value='$status'>$status</option>";
+          $color = ''; // Initialize color variable
+
+          // Set color based on the status
+          if ($status == 'InProgress') {
+            $color = '#ffff00'; // Yellow color for InProgress
+          } elseif ($status == 'Assigned') {
+            $color = '#ffc000'; // Orange color for Assigned
+          } elseif ($status == 'Completed') {
+            $color = '#04b0f0'; // Cyan color for Completed
+          } elseif ($status == 'Tested') {
+            $color = '#00ff80'; // Green color for Tested
+          } elseif ($status == 'Not Assigned') {
+            $color = '#ffffff'; // White color for Not Assigned
+          }
+
+          echo "<option value='$status' style='background-color: $color;'>$status</option>";
+        }
+        ?>
+      </select>
+      <label for="type">Type:</label>
+      <select id="type">
+        <option value="">All</option>
+        <?php
+        // Fetch types from the database
+        $query = "SELECT DISTINCT type FROM jobs";
+        $result = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($result)) {
+          $type = $row['type'];
+          echo "<option value='$type'>$type</option>";
         }
         ?>
       </select>
@@ -156,6 +84,7 @@
       <input type="date" id="end_date">
 
       <button id="fill" onclick="applyFilters()">Apply</button>
+      <button id="fill" onclick="clearFilters()">Clear Filters</button>
     </div>
 
     <div id="output">
@@ -165,7 +94,7 @@
         $result = mysqli_query($conn, $query);
 
         if ($result) {
-          echo "<center><h2 id=\"lbh\">JOBS</h2><br><br><br>";
+          echo "<center><h2 id=\"lbh\">JOBS</h2><br>";
           echo "<table id=\"lbt\" border='2'>
                   <thead>
                     <tr>
@@ -173,23 +102,42 @@
                       <th>Project Manager</th>
                       <th>Fitter</th>
                       <th>Status</th>
+                      <th>Type</th>
                       <th>Last Updated</th>
                     </tr>
                   </thead>
                   <tbody>";
 
           while ($record = mysqli_fetch_assoc($result)) {
-            echo "<tr>
+            $status = $record['currentstate'];
+            $type = $record['type'];
+            $color = ''; // Initialize color variable
+
+            // Set color based on the status
+            if ($status == 'InProgress') {
+              $color = '#ffff00'; // Yellow color for InProgress
+            } elseif ($status == 'Assigned') {
+              $color = '#ffc000'; // Orange color for Assigned
+            } elseif ($status == 'Completed') {
+              $color = '#04b0f0'; // Cyan color for Completed
+            } elseif ($status == 'Tested') {
+              $color = '#00ff80'; // Green color for Tested
+            } elseif ($status == 'Not Assigned') {
+              $color = '#ffffff'; // White color for Not Assigned
+            }
+
+            echo "<tr id='$status' style='background-color: $color;'>
                     <td class='jobid'>{$record['jobid']}</td>
                     <td class='project-manager'>{$record['projectmanager']}</td>
                     <td class='fitter'>{$record['allocatedfitter']}</td>
-                    <td class='status'>{$record['currentstate']}</td>
+                    <td class='status'>$status</td>
+                    <td class='type'>$type</td>
                     <td class='last-updated'>{$record['LastUpdated']}</td>
                   </tr>";
           }
 
           echo "</tbody>
-                </table></center>";
+                </table><br><button id='fill-green' onclick='printTable()'>Print</button></center>";
         } else {
           echo "No records found.";
         }
@@ -201,53 +149,100 @@
       ?>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
+
     <script>
+      function printTable() {
+        var tableContent = document.getElementById("lbt").outerHTML;
+        var newWindow = window.open("", "_blank");
+        newWindow.document.write('<html><center><head><title>Print Table</title>');
+        newWindow.document.write('<style>@media print {table {border-collapse: collapse;}');
+        newWindow.document.write('table, th, td {text-align: center; border: 1px solid black;}');
+        newWindow.document.write('th {text-align: center; background-color: #ff8a8a; height: 50px;}');
+        newWindow.document.write('tr[data-status="InProgress"] { background-color: #ffff00 !important; }');
+        newWindow.document.write('tr[data-status="Assigned"] { background-color: #ffc000 !important; }');
+        newWindow.document.write('tr[data-status="Completed"] { background-color: #04b0f0 !important; }');
+        newWindow.document.write('tr[data-status="Tested"] { background-color: #00ff80 !important; }');
+        newWindow.document.write('tr[data-status="Not Assigned"] { background-color: #ffffff !important; }}');
+        newWindow.document.write('</style></head><body>');
+        newWindow.document.write('<h2>Jobs</h2>');
+        newWindow.document.write(tableContent);
+        newWindow.document.write('</body></center></html>');
+        newWindow.document.close();
+
+        newWindow.onload = function () {
+          newWindow.print();
+        };
+      }
+
+      function clearFilters() {
+        document.getElementById("project_manager").value = "";
+        document.getElementById("fitter").value = "";
+        document.getElementById("status").value = "";
+        document.getElementById("type").value = "";
+        document.getElementById("start_date").value = "";
+        document.getElementById("end_date").value = "";
+        applyFilters();
+      }
+
       function applyFilters() {
         var projectManager = document.getElementById("project_manager").value;
         var fitter = document.getElementById("fitter").value;
         var status = document.getElementById("status").value;
+        var type = document.getElementById("type").value;
         var startDate = document.getElementById("start_date").value;
         var endDate = document.getElementById("end_date").value;
 
         var rows = document.getElementById("lbt").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-
         for (var i = 0; i < rows.length; i++) {
           var row = rows[i];
           var projectManagerCell = row.getElementsByClassName("project-manager")[0];
           var fitterCell = row.getElementsByClassName("fitter")[0];
           var statusCell = row.getElementsByClassName("status")[0];
+          var typeCell = row.getElementsByClassName("type")[0];
           var lastUpdatedCell = row.getElementsByClassName("last-updated")[0];
 
-          var hideRow = false;
+          var projectManagerText = projectManagerCell.textContent || projectManagerCell.innerText;
+          var fitterText = fitterCell.textContent || fitterCell.innerText;
+          var statusText = statusCell.textContent || statusCell.innerText;
+          var typeText = typeCell.textContent || typeCell.innerText;
+          var lastUpdatedText = lastUpdatedCell.textContent || lastUpdatedCell.innerText;
 
-          if (projectManager && projectManager !== projectManagerCell.innerHTML) {
-            hideRow = true;
+          var showRow = true;
+
+          if (projectManager && projectManagerText !== projectManager) {
+            showRow = false;
           }
 
-          if (fitter && fitter !== fitterCell.innerHTML) {
-            hideRow = true;
+          if (fitter && fitterText !== fitter) {
+            showRow = false;
           }
 
-          if (status && status !== statusCell.innerHTML) {
-            hideRow = true;
+          if (status && statusText !== status) {
+            showRow = false;
           }
 
-          if (startDate && startDate > lastUpdatedCell.innerHTML) {
-            hideRow = true;
+          if (type && typeText !== type) {
+            showRow = false;
           }
 
-          if (endDate && endDate <= lastUpdatedCell.innerHTML) {
-            hideRow = true;
+          if (startDate && lastUpdatedText < startDate) {
+            showRow = false;
           }
 
-          if (hideRow) {
-            row.style.display = "none";
-          } else {
+          if (endDate && lastUpdatedText >= endDate) {
+            showRow = false;
+          }
+
+          if (showRow) {
             row.style.display = "";
+          } else {
+            row.style.display = "none";
           }
         }
       }
     </script>
-  </div>
-</body>
+	<?php include 'loading.php'; ?>
+  </body>
 </html>

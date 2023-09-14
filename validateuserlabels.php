@@ -59,6 +59,24 @@ $_SESSION['password']=$userpin;
         #header {
             /* background-image: url('path/to/your/image.jpg'); */
         }
+		
+		        @media screen and (max-width: 768px) {
+            /* Adjust styles for smaller screens */
+            h4.center {
+                font-size: 18px;
+            }
+
+            .form-cube {
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .form-cube h1,
+            .form-cube h2,
+            .form-cube h3 {
+                font-size: 16px;
+            }
+        }
     </style>
     <script type="text/javascript">
         function handleBarcodeInput(event) {
@@ -83,7 +101,7 @@ $_SESSION['password']=$userpin;
 if ($flag) {
 
     echo " 
-			 <form method=\"post\" id=\"myForm\" action=\"kanban1.php\">
+			 <form method=\"post\" id=\"myForm\" action=\"labels1.php\">
         <br><br>
         <div class=\"signup-container\">
             <!-- Box container containing elements -->
@@ -92,13 +110,13 @@ if ($flag) {
                 <h3 id=\"heading\">Scan/Enter the PartNo</h3>
                 <div class=\"input-field\" id=\"idFld\">
                     <input type=\"text\" id=\"barcodeInput\" name=\"barcode\" autofocus>
-                </div><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"kanbanlogin.html\">Logout</a></center>
+                </div><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"labelslogin.html\">Logout</a></center>
             </div> 
 </div>
 </form> ";
 } else {
     echo "
-<form method=\"get\" id=\"myForm\" action=\"validateuserkanban.php\">
+<form method=\"get\" id=\"myForm\" action=\"validateuserlabels.php\">
 	<br><br>
 	<div class=\"signup-container\"> 
             <!-- Box container containing elements -->

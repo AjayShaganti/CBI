@@ -277,10 +277,7 @@ label {
         if ($flag) {
             echo "<center><form method=\"post\" id=\"myForm\" action=\"\">";
             echo "<h3>" . $msg . "</h3>";
-			echo "#myTable {";
-echo "  width: 90% !important;";
-echo "}";
-            echo "<table id=\"myTable\" style=\"width: 90% !important;\">";
+			echo "<table id=\"myTable\" style=\"width: 90% !important;\">";
             echo "<tr>";
             echo "<th>Bin Location</th>";
             echo "<th>Part Name</th>";

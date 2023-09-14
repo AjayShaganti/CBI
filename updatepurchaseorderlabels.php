@@ -10,7 +10,7 @@ $response = '';
 try {
     if ($conn) {
         // Prepare the SQL statement with placeholders
-        $updateQuery = "UPDATE reorderhmtp SET PurchaseOrder = ?,Status = ?, lastupdated = ? WHERE PartNo = ?";
+        $updateQuery = "UPDATE reorderlabels SET PurchaseOrder = ?,Status = ?, lastupdated = ? WHERE PartNo = ?";
         $statement = mysqli_prepare($conn, $updateQuery);
 
         if ($statement) {

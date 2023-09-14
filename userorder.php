@@ -2,6 +2,7 @@
 include 'connection.php';
 session_start();
 $fittername = $_SESSION['fittername'];
+$password=$_SESSION['password'];
 
 $msg = '';
 $flag = 0;
@@ -233,9 +234,9 @@ if ($flag) {
                 <div class=\"input-field\" id=\"idFld\">
                     <input type=\"text\" id=\"quantity\" name=\"effectedquantity\" autofocus>
                 </div>
-                <button id=\"fill\" class=\"used\" type=\"button\" onclick=\"submitForm('userused.php')\">Used</button><br><br><br>
+                <button id=\"fill\" class=\"used\" type=\"button\" onclick=\"submitForm('userused.php')\">Used</button><br><br>
                 <button id=\"fill-green\" class=\"restored\" type=\"button\" onclick=\"submitForm('userrestored.php')\">Restored</button>
-				<br><br><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"userlogin.html\">Logout</a></center>
+				<br><br><strong><a href=\"validateuser.php?password=" . urlencode($password) . "\" style=\"margin-left:0%;\"> &#x1F50D Scan New Item</a><strong><br><br><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"userlogin.html\">Logout</a></center>
             </div>
               
         </div>

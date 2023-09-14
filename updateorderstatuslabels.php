@@ -3,25 +3,25 @@ include 'connection.php';
 
 // Retrieve the values sent from the JavaScript code
 $partNo = $_POST['partNo'];
-$purchaseOrder = $_POST['purchaseOrder'];
-$status='Ordered';
+$status = $_POST['status'];
+
 $response = '';
 
 try {
     if ($conn) {
         // Prepare the SQL statement with placeholders
-        $updateQuery = "UPDATE reorderhmtp SET PurchaseOrder = ?,Status = ?, lastupdated = ? WHERE PartNo = ?";
+        $updateQuery = "UPDATE reorderlabels SET Status = ?, lastupdated = ? WHERE PartNo = ?";
         $statement = mysqli_prepare($conn, $updateQuery);
 
         if ($statement) {
             // Bind the parameters to the statement
-            mysqli_stmt_bind_param($statement, 'ssss', $purchaseOrder, $status, date('Y-m-d H:i:s'), $partNo);
+            mysqli_stmt_bind_param($statement, 'sss', $status, date('Y-m-d H:i:s'), $partNo);
 
             // Execute the statement
             $result = mysqli_stmt_execute($statement);
 
             if ($result) {
-                $response = "Purchase Order has been updated to $purchaseOrder for Part No: $partNo";
+                $response = "Status has been updated to $status for Part No: $partNo";
             } else {
                 throw new Exception("<h3>Failed to update</h3>");
             }

@@ -255,18 +255,6 @@ position: sticky;
   .status-CustomQty {
     background-color:#E0FFFF;
   }
-  
-  .error {
-	  
-	  color:red;
-	  text-decoration:strong;
-  }
-  
-    .success {
-	  
-	  color:green;
-	  text-decoration:strong;
-  }
 
 </style>
 <!-- Add the loading animation element -->
@@ -429,14 +417,12 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus1('$PNo1[$i1]', $i1)\">Update</button>
         </form>
     </td>
-<td>
-    <input type='text' 
-           id='purchaseOrder1_$i1' 
-           value='{$record['PurchaseOrder']}' 
-           onfocusout=\"updatePurchaseOrderUniversal(1, '$PNo1[$i1]', $i1)\"
-    />
-</td>
-
+    <td>
+        <form id='purchaseOrderForm_$i1' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='purchaseOrder1_$i1' value='{$record['PurchaseOrder']}'/>
+            <button id='no-fill' type='button' onclick=\"updatePurchaseOrder1('$PNo1[$i1]', $i1)\">Update</button>
+        </form>
+    </td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser1('{$PNo1[$i1]}',$BackOrder1[$i1])\">Partially Received</button>
     </td>
@@ -602,19 +588,12 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus('$PNo2[$i2]', $i2)\">Update</button>
         </form>
     </td>
-<!--   <td>
+    <td>
         <form id='purchaseOrderForm2_$i2' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder2_$i2' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder('$PNo2[$i2]', $i2)\">Update</button>
         </form>
-    </td>-->
-	<td>
-    <input type='text' 
-           id='purchaseOrder2_$i2' 
-           value='{$record['PurchaseOrder']}' 
-           onfocusout=\"updatePurchaseOrderUniversal(2, '$PNo2[$i2]', $i2)\"
-    />
-	</td>
+    </td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser('{$PNo2[$i2]}',$BackOrder2[$i2])\">Partially Received</button>
     </td>
@@ -759,19 +738,12 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus3('$PNo3[$i3]', $i3)\">Update</button>
         </form>
     </td>
-   <!-- <td>
+    <td>
         <form id='purchaseOrderForm_$i3' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder3_$i3' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder3('$PNo3[$i3]', $i3)\">Update</button>
         </form>
-        </td>-->
-	<td>
-    <input type='text' 
-           id='purchaseOrder3_$i3' 
-           value='{$record['PurchaseOrder']}' 
-           onfocusout=\"updatePurchaseOrderUniversal(3, '$PNo3[$i3]', $i3)\"
-    />
-	</td>
+    </td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser3('{$PNo3[$i3]}',$BackOrder3[$i3])\">Partially Received</button>
     </td>
@@ -917,19 +889,12 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus4('$PNo4[$i4]', $i4)\">Update</button>
         </form>
     </td>
-   <!-- <td>
+    <td>
         <form id='purchaseOrderForm_$i4' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder4_$i4' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder4('$PNo4[$i4]', $i4)\">Update</button>
         </form>
-        </td>-->
-	<td>
-    <input type='text' 
-           id='purchaseOrder4_$i4' 
-           value='{$record['PurchaseOrder']}' 
-           onfocusout=\"updatePurchaseOrderUniversal(4, '$PNo4[$i4]', $i4)\"
-    />
-	</td>
+    </td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser4('{$PNo4[$i4]}',$BackOrder4[$i4])\">Partially Received</button>
     </td>
@@ -1076,19 +1041,12 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus5('$PNo5[$i5]', $i5)\">Update</button>
         </form>
     </td>
-    <!--<td>
+    <td>
         <form id='purchaseOrderForm_$i5' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder5_$i5' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder5('$PNo5[$i5]', $i5)\">Update</button>
         </form>
-        </td>-->
-	<td>
-    <input type='text' 
-           id='purchaseOrder5_$i5' 
-           value='{$record['PurchaseOrder']}' 
-           onfocusout=\"updatePurchaseOrderUniversal(5, '$PNo5[$i5]', $i5)\"
-    />
-	</td>
+    </td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser5('{$PNo5[$i5]}',$BackOrder5[$i5])\">Partially Received</button>
     </td>
@@ -1342,49 +1300,34 @@ function updatePurchaseOrder1(partNo1, rowIndex1) {
     xhr1.send(data1);
 }
 
-function updatePurchaseOrderUniversal(tabNumber, partNo, rowIndex) {
-    var purchaseOrderInput = document.getElementById('purchaseOrder' + tabNumber + '_' + rowIndex);
-    var purchaseOrder = purchaseOrderInput.value;
-	//var cell=document.getElementById(
+function promptUser1(partNo1, oldQuantity1) {
+    var newQuantity1 = prompt("For: " + partNo1 + "\nPartial Ordered Quantity:");
+    var confirmed1 = confirm("Are you sure you want to update the Received Quantity to " + newQuantity1 + "?");
 
-    // Prepare the data to send
-    var data = 'tabNumber=' + encodeURIComponent(tabNumber) +
-               '&partNo=' + encodeURIComponent(partNo) +
-               '&purchaseOrder=' + encodeURIComponent(purchaseOrder);
-			   
+    if (!confirmed1) {
+        return; // Exit the function if not confirmed
+    }
 
-    // Send the data to the PHP page
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'updateUniversalPurchaseOrder.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);  // Parse the JSON string into an object
-            console.log(response);  // To see the full object
-            if (response.message) {
-                console.log(response.message);  // Log the message property
-            } else {
-                console.log("The message property is not set.");
-            }
-			//alert(purchaseOrder);
-			if((purchaseOrder!='NA')&&(purchaseOrder!='na'))
-			{
-            if(response.success) {
-              purchaseOrderInput.style.color="green";
-              purchaseOrderInput.style.fontWeight = "bold";
-
-              
-            } else {
-              purchaseOrderInput.style.color="red";
-              purchaseOrderInput.style.fontWeight = "bold";
-            }
-			}
-            //location.reload();
+    // Send the data to a PHP page
+    var xhr1 = new XMLHttpRequest();
+    xhr1.open("POST", "partialOrderReceived1.php", true);
+    xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr1.onreadystatechange = function() {
+        if (xhr1.readyState === 4 && xhr1.status === 200) {
+            // Process the response from the PHP page
+            var response1 = xhr1.responseText;
+            alert(response1);
+            // Refresh the page
+            location.reload();
         }
     };
-    xhr.send(data);
-}
 
+    // Prepare the data to send
+    var data1 = 'partNo=' + encodeURIComponent(partNo1) +
+                '&newQuantity=' + encodeURIComponent(newQuantity1) +
+                '&oldQuantity=' + encodeURIComponent(oldQuantity1);
+    xhr1.send(data1);
+}
 
 function updateComments1(partNo1, rowIndex1) {
     var commentsInput1 = document.getElementById('comments1_' + rowIndex1);

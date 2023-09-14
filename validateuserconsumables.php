@@ -83,7 +83,7 @@ $_SESSION['password']=$userpin;
 if ($flag) {
 
     echo " 
-			 <form method=\"post\" id=\"myForm\" action=\"kanban1.php\">
+			 <form method=\"post\" id=\"myForm\" action=\"consumables1.php\">
         <br><br>
         <div class=\"signup-container\">
             <!-- Box container containing elements -->
@@ -92,13 +92,13 @@ if ($flag) {
                 <h3 id=\"heading\">Scan/Enter the PartNo</h3>
                 <div class=\"input-field\" id=\"idFld\">
                     <input type=\"text\" id=\"barcodeInput\" name=\"barcode\" autofocus>
-                </div><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"kanbanlogin.html\">Logout</a></center>
+                </div><center><a id=\"\" class=\"ri-logout-circle-line\" href=\"consumableslogin.html\">Logout</a></center>
             </div> 
 </div>
 </form> ";
 } else {
     echo "
-<form method=\"get\" id=\"myForm\" action=\"validateuserkanban.php\">
+<form method=\"get\" id=\"myForm\" action=\"validateuserconsumables.php\">
 	<br><br>
 	<div class=\"signup-container\"> 
             <!-- Box container containing elements -->

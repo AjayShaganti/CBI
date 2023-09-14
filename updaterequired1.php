@@ -8,7 +8,7 @@ $requiredQty = $_POST['requiredQty'];
 try {
     if ($conn) {
         // Prepare the SQL statement with placeholders
-        $updateQuery = "UPDATE reorderhmtp SET Required = ?, BackOrder = ?, lastupdated = ? WHERE PartNo = ?";
+        $updateQuery = "UPDATE reorderhmtp SET Required = ?, BackOrder = ?, status='Custom Qty', lastupdated = ? WHERE PartNo = ?";
         $statement = mysqli_prepare($conn, $updateQuery);
 
         if ($statement) {

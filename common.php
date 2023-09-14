@@ -116,8 +116,8 @@
         <li><a href="Stock.php" id="select">
             <p>Stock</p>
           </a></li>
-        <li><a href="updatebybin1.php" id="select">
-            <p>Update by BinLocation</p>
+        <li><a href="prodschedule.php" id="select">
+            <p>Production Schedule</p>
           </a></li>
         <li><a href="updatebypartno1.php" id="select">
             <p>Update by PartNumber</p>

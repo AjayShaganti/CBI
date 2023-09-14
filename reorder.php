@@ -66,11 +66,11 @@ echo " <script src=\"https://unpkg.com/xlsx/dist/xlsx.full.min.js\"></script>";
 width:95%;
 }
 #tab4 {
-	margin-left:-28%;
+	margin-left:-30%;
 width:100%;
 }
 #tab5 {
-	margin-left:-22%;
+	margin-left:-40%;
 width:100%;
 }
 
@@ -103,7 +103,12 @@ color:red;
   top: -0.25rem;
   transition: top 0.25s;
 }
-
+#lbt4 {
+	margin-left:5% !important;
+}
+#lbt5 {
+	margin-left:8%;
+}
 table {
   width: 10%;
   border-collapse: collapse;
@@ -160,6 +165,19 @@ position: sticky;
 	
 }
 
+#refresh{
+	
+    color: #ffeef0;
+    background-color: #FF5E60;
+	color:black;
+    //text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 8px 20px;
+	font-size:20px;
+	margin-top:0.5%;
+	
+}
 
   .tab-content {
     max-height: 650px; /* Adjust the height as needed */
@@ -234,7 +252,21 @@ position: sticky;
   .status-PartiallyReceived {
     background-color: #00ff80;
   }
-
+  .status-CustomQty {
+    background-color:#E0FFFF;
+  }
+  
+  .error {
+	  
+	  color:red;
+	  text-decoration:strong;
+  }
+  
+    .success {
+	  
+	  color:green;
+	  text-decoration:strong;
+  }
 
 </style>
 <!-- Add the loading animation element -->
@@ -252,7 +284,7 @@ include 'connection.php';
 $msg = '';
 $sql = "
   INSERT INTO reorderhmtp
-  SELECT BinLocation, PartName, PartNo, Category, Quantity AS Available, (Max-Min) AS Required, 0 AS Received, (Max-Min) AS BackOrder, 'To be Ordered' AS Status, 'NA' AS PurchaseOrder, NOW() AS LastUpdated, 'NA' AS Comments FROM tophathymod
+  SELECT BinLocation, PartName, PartNo, Category, Quantity AS Available, (Max-Quantity) AS Required, 0 AS Received, (Max-Quantity) AS BackOrder, 'To be Ordered' AS Status, 'NA' AS PurchaseOrder, NOW() AS LastUpdated, 'NA' AS Comments FROM tophathymod
   WHERE PartNo NOT IN (
     SELECT PartNo FROM reorderhmtp
   ) AND Quantity <= Min
@@ -333,7 +365,8 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
 }
 
 echo "</select>
-</div><br><button id=\"fill-blue\" onclick=\"exportToExcel1()\">Export to Excel</button>";
+</div><!--<br><button id=\"fill-blue\" onclick=\"exportToExcel1()\">Export to Excel</button>-->
+<button id=\"refresh\" onclick=\"refreshdata1()\">Reload</button>";
 
     echo "<table class=\"reorder1\" id=\"lbt1\" border='2'>
 <thead>
@@ -341,7 +374,7 @@ echo "</select>
     <th>Bin Location</th>
     <th>Description</th>
     <th>Part Number</th>
-    <th>Category</th>
+    <th hidden>Category</th>
     <th>Available Quantity</th>
     <th>Required Quantity</th>
     <th>Received Quantity</th>
@@ -373,7 +406,7 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
     <td>{$record['ModifiedBinLocation']}</td>
     <td>{$record['PartName']}</td>
     <td>{$record['PartNo']}</td>
-    <td>{$record['Category']}</td>
+<td hidden>{$record['Category']}</td>
     <td>{$record['Available']}</td>
     <td>
         <form id='updateForm_$i1' onkeydown=\"disableEnterKey(event)\">
@@ -396,12 +429,14 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus1('$PNo1[$i1]', $i1)\">Update</button>
         </form>
     </td>
-    <td>
-        <form id='purchaseOrderForm_$i1' onkeydown=\"disableEnterKey(event)\">
-            <input type='text' id='purchaseOrder1_$i1' value='{$record['PurchaseOrder']}'/>
-            <button id='no-fill' type='button' onclick=\"updatePurchaseOrder1('$PNo1[$i1]', $i1)\">Update</button>
-        </form>
-    </td>
+<td>
+    <input type='text' 
+           id='purchaseOrder1_$i1' 
+           value='{$record['PurchaseOrder']}' 
+           onfocusout=\"updatePurchaseOrderUniversal(1, '$PNo1[$i1]', $i1)\"
+    />
+</td>
+
     <td>
         <button id=\"no-fill\" onclick=\"promptUser1('{$PNo1[$i1]}',$BackOrder1[$i1])\">Partially Received</button>
     </td>
@@ -443,7 +478,7 @@ include 'connection.php';
 $msg = '';
 $sql = "
   INSERT INTO reorder
-  SELECT BinLocation, PartName, PartNo, Category, Quantity AS Available, (Max-Min) AS Required, 0 AS Received, (Max-Min) AS BackOrder, 'To be Ordered' AS Status, 'NA' AS PurchaseOrder, NOW() AS LastUpdated, 'NA' AS Comments FROM stock
+  SELECT BinLocation, PartName, PartNo, Category, Quantity AS Available, (Max-Quantity) AS Required, 0 AS Received, (Max-Quantity) AS BackOrder, 'To be Ordered' AS Status, 'NA' AS PurchaseOrder, NOW() AS LastUpdated, 'NA' AS Comments FROM stock
   WHERE PartNo NOT IN (
     SELECT PartNo FROM reorder
   ) AND Quantity <= Min
@@ -496,7 +531,7 @@ mysqli_data_seek($reorderResult, 0); // Reset the result pointer
 
 while ($record = mysqli_fetch_assoc($reorderResult)) {
   $status = $record['Status'];
-  $formattedTimestamp = date('d/m/y H:i', strtotime($record['LastUpdated']));
+
   if (!in_array($status, $statuses)) {
     $statuses[] = $status;
     echo "<option value=\"$status\">$status</option>";
@@ -504,7 +539,8 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
 }
 
 echo "</select>
-</div><button id=\"fill-green\" onclick=\"printTable();\">Print</button>";
+</div><button id=\"fill-green\" onclick=\"printTable();\">Print</button>
+<br><button id=\"refresh\" onclick=\"refreshdata()\">Reload</button>";
 echo "</center>";
     echo "<table class=\"reorder2\" id=\"lbt2\" border='2'>
 <thead>
@@ -512,7 +548,7 @@ echo "</center>";
     <th>Bin Location</th>
     <th>Description</th>
     <th>Part Number</th>
-    <th>Category</th>
+    <th hidden>Category</th>
     <th>Available Quantity</th>
     <th>Required Quantity</th>
     <th>Received Quantity</th>
@@ -537,13 +573,14 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
   $PNo2[$i2] = $record['PartNo'];
   $Pname2[$i2] = $record['PartName'];
   $BackOrder2[$i2]=$record['BackOrder'];
+    $formattedTimestamp = date('d/m/y H:i', strtotime($record['LastUpdated']));
   
   $statusClass = 'status-' . str_replace(' ', '', $record['Status']);
   echo "<tr class=\"$statusClass\">
     <td>{$record['ModifiedBinLocation']}</td>
     <td>{$record['PartName']}</td>
     <td>{$record['PartNo']}</td>
-    <td>{$record['Category']}</td>
+<td hidden>{$record['Category']}</td>
     <td>{$record['Available']}</td>
     <td>
         <form id='updateForm_$i2' onkeydown=\"disableEnterKey(event)\">
@@ -565,12 +602,19 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus('$PNo2[$i2]', $i2)\">Update</button>
         </form>
     </td>
-    <td>
+<!--   <td>
         <form id='purchaseOrderForm2_$i2' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder2_$i2' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder('$PNo2[$i2]', $i2)\">Update</button>
         </form>
-    </td>
+    </td>-->
+	<td>
+    <input type='text' 
+           id='purchaseOrder2_$i2' 
+           value='{$record['PurchaseOrder']}' 
+           onfocusout=\"updatePurchaseOrderUniversal(2, '$PNo2[$i2]', $i2)\"
+    />
+	</td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser('{$PNo2[$i2]}',$BackOrder2[$i2])\">Partially Received</button>
     </td>
@@ -663,7 +707,7 @@ echo "</select>
     <th>Bin Location</th>
     <th>Description</th>
     <th>Part Number</th>
-    <th>Category</th>
+    <th hidden>Category</th>
     <th>Required Quantity</th>
     <th>Received Quantity</th>
     <th>Back Order</th>
@@ -694,7 +738,7 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
     <td>{$record['ModifiedBinLocation']}</td>
     <td>{$record['PartName']}</td>
     <td>{$record['PartNo']}</td>
-    <td>{$record['Category']}</td>
+<td hidden>{$record['Category']}</td>
     <td>
         <form id='updateForm_$i3' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='requiredQty3_$i3' value='{$record['Required']}'/>
@@ -715,12 +759,19 @@ while ($record = mysqli_fetch_assoc($reorderResult)) {
             <button id='no-fill' type='button' onclick=\"updateStatus3('$PNo3[$i3]', $i3)\">Update</button>
         </form>
     </td>
-    <td>
+   <!-- <td>
         <form id='purchaseOrderForm_$i3' onkeydown=\"disableEnterKey(event)\">
             <input type='text' id='purchaseOrder3_$i3' value='{$record['PurchaseOrder']}'/>
             <button id='no-fill' type='button' onclick=\"updatePurchaseOrder3('$PNo3[$i3]', $i3)\">Update</button>
         </form>
-    </td>
+        </td>-->
+	<td>
+    <input type='text' 
+           id='purchaseOrder3_$i3' 
+           value='{$record['PurchaseOrder']}' 
+           onfocusout=\"updatePurchaseOrderUniversal(3, '$PNo3[$i3]', $i3)\"
+    />
+	</td>
     <td>
         <button id=\"no-fill\" onclick=\"promptUser3('{$PNo3[$i3]}',$BackOrder3[$i3])\">Partially Received</button>
     </td>
@@ -759,8 +810,158 @@ echo "</tbody>
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
 <?php
+include 'connection.php';
 
+$msg = '';
+
+if ($conn) {
+  $query = "SELECT *,
+    CONCAT(
+      BinLocation,
+      CASE
+        WHEN RIGHT(BinLocation, 2) REGEXP '^[0-9]+0$' THEN ''
+        ELSE ''
+      END
+    ) AS ModifiedBinLocation
+    FROM reorderconsumables
+    ORDER BY CAST(REGEXP_REPLACE(BinLocation, '[^0-9]', '') AS UNSIGNED),
+    LENGTH(BinLocation),
+    BinLocation";
+
+  $reorderResult = mysqli_query($conn, $query);
+
+  if ($reorderResult) {
+    echo "
+    <center>
+    <h2 id=\"lbh\">Re-Order (Consumables)</h2>
+    <br>
+    <h3>" . $msg . "<br><br>";
+
+
+
+echo "<div id=\"filters\">
+<label for=\"status\">Status:</label>
+<select id=\"status\" onchange=\"applyFilters4()\">
+<option value=\"\">All</option>"; // Include the default "All" option here
+
+$statuses = array();
+mysqli_data_seek($reorderResult, 0); // Reset the result pointer
+
+while ($record = mysqli_fetch_assoc($reorderResult)) {
+  $status = $record['Status'];
+  if (!in_array($status, $statuses)) {
+    $statuses[] = $status;
+    echo "<option value=\"$status\">$status</option>";
+  }
+}
+
+echo "</select>
+</div></center>";
+    echo "<br><button id=\"fill-green\" onclick=\"printTable4();\">Print</button>";
+
+    echo "<table class=\"reorder\" id=\"lbt4\" border='2'>
+<thead>
+<tr>
+    <th>Bin Location</th>
+    <th>Description</th>
+    <th>Part Number</th>
+    <th hidden>Category</th>
+    <th>Required Quantity</th>
+    <th>Received Quantity</th>
+    <th>Back Order</th>
+    <th>Fully Received</th>
+    <th>Current Status</th>
+	<th>Update Status</th>
+    <th>Purchase Order</th>
+    <th>Partially Received</th>
+    <th>Last Updated</th>
+    <th>Comments</th>
+     <th>Delete</th>
+</tr>
+</thead>
+<tbody><a id=\"top4\"><a id=\"down\" href=\"#bottom4\"><i style='font-size:24px; color:#A9A9A9' class='fas'>&#xf13a;</i></a>";
+
+mysqli_data_seek($reorderResult, 0); // Reset the result pointer
+$PNo4 = [];
+$Pname4 = [];
+$BackOrder4 = [];
+$i4 = 0;
+while ($record = mysqli_fetch_assoc($reorderResult)) {
+  $PNo4[$i4] = $record['PartNo'];
+  $Pname4[$i4] = $record['PartName'];
+  $BackOrder4[$i4]=$record['BackOrder'];
+  
+  $statusClass = 'status-' . str_replace(' ', '', $record['Status']);
+  echo "<tr class=\"$statusClass\">
+    <td>{$record['ModifiedBinLocation']}</td>
+    <td>{$record['PartName']}</td>
+    <td>{$record['PartNo']}</td>
+<td hidden>{$record['Category']}</td>
+    <td>
+        <form id='updateForm_$i4' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='requiredQty4_$i4' value='{$record['Required']}'/>
+            <button id='no-fill' type='button' onclick=\"updateRequiredQty4('$PNo4[$i4]', $i4)\">Update</button>
+        </form>
+    </td>
+    <td>{$record['Received']}</td>
+    <td>{$record['BackOrder']}</td>
+    <td>
+        <button id=\"no-fill\" onclick=\"fullOrderReceived4('{$PNo4[$i4]}',$BackOrder4[$i4])\">Fully Received</button>
+    </td><td>{$record['Status']}</td>
+    <td>
+        <form id='updateStatusForm_$i4' onkeydown=\"disableEnterKey(event)\">
+            <select id='status4_$i4'>
+                <option value='To be Ordered'>To be Ordered</option>
+                <option value='Sent'>Sent</option>
+            </select>
+            <button id='no-fill' type='button' onclick=\"updateStatus4('$PNo4[$i4]', $i4)\">Update</button>
+        </form>
+    </td>
+   <!-- <td>
+        <form id='purchaseOrderForm_$i4' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='purchaseOrder4_$i4' value='{$record['PurchaseOrder']}'/>
+            <button id='no-fill' type='button' onclick=\"updatePurchaseOrder4('$PNo4[$i4]', $i4)\">Update</button>
+        </form>
+        </td>-->
+	<td>
+    <input type='text' 
+           id='purchaseOrder4_$i4' 
+           value='{$record['PurchaseOrder']}' 
+           onfocusout=\"updatePurchaseOrderUniversal(4, '$PNo4[$i4]', $i4)\"
+    />
+	</td>
+    <td>
+        <button id=\"no-fill\" onclick=\"promptUser4('{$PNo4[$i4]}',$BackOrder4[$i4])\">Partially Received</button>
+    </td>
+    <td>{$record['LastUpdated']}</td>
+    <td>
+        <form id='commentsForm_$i4' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='comments4_$i4' value='{$record['Comments']}'/>
+            <button id='no-fill' type='button' onclick=\"updateComments4('$PNo4[$i4]', $i4)\">Update</button>
+        </form>
+    </td>
+<td>
+        <a id=\"fill-white\" onclick=\"deleteRow4('$PNo4[$i4]')\">&#10060;</a>
+    </td>
+  </tr>";
+  $i4++;
+}
+
+echo "</tbody>
+</table>";
+ echo "<a id=\"bottom4\"></a>
+<a id=\"up\" href=\"#top4\"><i style='font-size:24px;color:#A9A9A9' class='fas'>&#xf139;</i></a>";
+
+  } else {
+    echo "Error executing the query: " . mysqli_error($conn);
+  }
+
+  mysqli_close($conn);
+} else {
+  echo "Error connecting to the database.";
+}
 ?>
+
 	</div>
     </div>
 		   <div class="tab">
@@ -768,7 +969,156 @@ echo "</tbody>
       <label for="tab-5" class="tab-label">LABELS</label>
       <div id="tab5" class="tab-content">
 <?php
+include 'connection.php';
 
+$msg = '';
+
+if ($conn) {
+  $query = "SELECT *,
+    CONCAT(
+      BinLocation,
+      CASE
+        WHEN RIGHT(BinLocation, 2) REGEXP '^[0-9]+0$' THEN ''
+        ELSE ''
+      END
+    ) AS ModifiedBinLocation
+    FROM reorderlabels
+    ORDER BY CAST(REGEXP_REPLACE(BinLocation, '[^0-9]', '') AS UNSIGNED),
+    LENGTH(BinLocation),
+    BinLocation";
+
+  $reorderResult = mysqli_query($conn, $query);
+
+  if ($reorderResult) {
+    echo "
+    <center>
+    <h2 id=\"lbh\">Re-Order (Labels)</h2>
+    <br>
+    <h3>" . $msg . "<br><br>";
+
+
+
+echo "<div id=\"filters\">
+<label for=\"status\">Status:</label>
+<select id=\"status\" onchange=\"applyFilters5()\">
+<option value=\"\">All</option>"; // Include the default "All" option here
+
+$statuses = array();
+mysqli_data_seek($reorderResult, 0); // Reset the result pointer
+
+while ($record = mysqli_fetch_assoc($reorderResult)) {
+  $status = $record['Status'];
+  if (!in_array($status, $statuses)) {
+    $statuses[] = $status;
+    echo "<option value=\"$status\">$status</option>";
+  }
+}
+
+echo "</select>
+</div></center>";
+    echo "<br><button id=\"fill-green\" onclick=\"printTable5();\">Print</button>";
+
+    echo "<table class=\"reorder\" id=\"lbt5\" border='2'>
+<thead>
+<tr>
+    <th>Bin Location</th>
+    <th>Description</th>
+    <th>Part Number</th>
+    <th hidden>Category</th>
+    <th>Required Quantity</th>
+    <th>Received Quantity</th>
+    <th>Back Order</th>
+    <th>Fully Received</th>
+    <th>Current Status</th>
+	<th>Update Status</th>
+    <th>Purchase Order</th>
+    <th>Partially Received</th>
+    <th>Last Updated</th>
+    <th>Comments</th>
+     <th>Delete</th>
+</tr>
+</thead>
+<tbody><a id=\"top5\"><a id=\"down\" href=\"#bottom5\"><i style='font-size:25px; color:#A9A9A9' class='fas'>&#xf13a;</i></a>";
+
+mysqli_data_seek($reorderResult, 0); // Reset the result pointer
+$PNo5 = [];
+$Pname5 = [];
+$BackOrder5 = [];
+$i5 = 0;
+while ($record = mysqli_fetch_assoc($reorderResult)) {
+  $PNo5[$i5] = $record['PartNo'];
+  $Pname5[$i5] = $record['PartName'];
+  $BackOrder5[$i5]=$record['BackOrder'];
+  
+  $statusClass = 'status-' . str_replace(' ', '', $record['Status']);
+  echo "<tr class=\"$statusClass\">
+    <td>{$record['ModifiedBinLocation']}</td>
+    <td>{$record['PartName']}</td>
+    <td>{$record['PartNo']}</td>
+<td hidden>{$record['Category']}</td>
+    <td>
+        <form id='updateForm_$i5' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='requiredQty5_$i5' value='{$record['Required']}'/>
+            <button id='no-fill' type='button' onclick=\"updateRequiredQty5('$PNo5[$i5]', $i5)\">Update</button>
+        </form>
+    </td>
+    <td>{$record['Received']}</td>
+    <td>{$record['BackOrder']}</td>
+    <td>
+        <button id=\"no-fill\" onclick=\"fullOrderReceived5('{$PNo5[$i5]}',$BackOrder5[$i5])\">Fully Received</button>
+    </td><td>{$record['Status']}</td>
+    <td>
+        <form id='updateStatusForm_$i5' onkeydown=\"disableEnterKey(event)\">
+            <select id='status5_$i5'>
+                <option value='To be Ordered'>To be Ordered</option>
+                <option value='Sent'>Sent</option>
+            </select>
+            <button id='no-fill' type='button' onclick=\"updateStatus5('$PNo5[$i5]', $i5)\">Update</button>
+        </form>
+    </td>
+    <!--<td>
+        <form id='purchaseOrderForm_$i5' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='purchaseOrder5_$i5' value='{$record['PurchaseOrder']}'/>
+            <button id='no-fill' type='button' onclick=\"updatePurchaseOrder5('$PNo5[$i5]', $i5)\">Update</button>
+        </form>
+        </td>-->
+	<td>
+    <input type='text' 
+           id='purchaseOrder5_$i5' 
+           value='{$record['PurchaseOrder']}' 
+           onfocusout=\"updatePurchaseOrderUniversal(5, '$PNo5[$i5]', $i5)\"
+    />
+	</td>
+    <td>
+        <button id=\"no-fill\" onclick=\"promptUser5('{$PNo5[$i5]}',$BackOrder5[$i5])\">Partially Received</button>
+    </td>
+    <td>{$record['LastUpdated']}</td>
+    <td>
+        <form id='commentsForm_$i5' onkeydown=\"disableEnterKey(event)\">
+            <input type='text' id='comments5_$i5' value='{$record['Comments']}'/>
+            <button id='no-fill' type='button' onclick=\"updateComments5('$PNo5[$i5]', $i5)\">Update</button>
+        </form>
+    </td>
+<td>
+        <a id=\"fill-white\" onclick=\"deleteRow5('$PNo5[$i5]')\">&#10060;</a>
+    </td>
+  </tr>";
+  $i5++;
+}
+
+echo "</tbody>
+</table>";
+ echo "<a id=\"bottom5\"></a>
+<a id=\"up\" href=\"#top5\"><i style='font-size:25px;color:#A9A9A9' class='fas'>&#xf139;</i></a>";
+
+  } else {
+    echo "Error executing the query: " . mysqli_error($conn);
+  }
+
+  mysqli_close($conn);
+} else {
+  echo "Error connecting to the database.";
+}
 ?>
 	</div>
     </div>
@@ -810,9 +1160,6 @@ tabSwitches.forEach(function(tabSwitch) {
 });
 
 
-
-
-
         function disableEnterKey(event) {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -823,7 +1170,9 @@ tabSwitches.forEach(function(tabSwitch) {
 		    window.onload = function() {
         applyFilters1();
 		applyFilters(); // Apply the initial filter
-		applyFilters3(); // Apply the initial filter
+		applyFilters3();
+		applyFilters4();
+		applyFilters5();		// Apply the initial filter
     }
 
 function applyFilters1() {
@@ -887,8 +1236,6 @@ function updateRequiredQty1(partNo1, rowIndex1) {
     xhr1.send(data1);
 }
 
-
-
 function fullOrderReceived1(partNo1, quantity1) {
     // Display a confirmation prompt with the new value
     var confirmed = confirm('Are you sure you have received ' + quantity1 + ' of ' + partNo1 + '?');
@@ -948,6 +1295,23 @@ function updateStatus1(partNo1, rowIndex1) {
     xhr1.send(data1);
 }
 
+function refreshdata1() {
+
+
+    // Send the data to the PHP page
+    var xhr1 = new XMLHttpRequest();
+    xhr1.open('POST', 'refreshdatahmtp.php', true);
+    xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr1.onreadystatechange = function() {
+        if (xhr1.readyState === 4 && xhr1.status === 200) {
+            // Process the response from the PHP page
+            var response1 = xhr1.responseText;
+            location.reload();
+        }
+    };
+    xhr1.send();
+}
+
 function updatePurchaseOrder1(partNo1, rowIndex1) {
     var purchaseOrderInput1 = document.getElementById('purchaseOrder1_' + rowIndex1);
     var purchaseOrder1 = purchaseOrderInput1.value;
@@ -978,34 +1342,49 @@ function updatePurchaseOrder1(partNo1, rowIndex1) {
     xhr1.send(data1);
 }
 
-function promptUser1(partNo1, oldQuantity1) {
-    var newQuantity1 = prompt("For: " + partNo1 + "\nPartial Ordered Quantity:");
-    var confirmed1 = confirm("Are you sure you want to update the Received Quantity to " + newQuantity1 + "?");
-
-    if (!confirmed1) {
-        return; // Exit the function if not confirmed
-    }
-
-    // Send the data to a PHP page
-    var xhr1 = new XMLHttpRequest();
-    xhr1.open("POST", "partialOrderReceived1.php", true);
-    xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr1.onreadystatechange = function() {
-        if (xhr1.readyState === 4 && xhr1.status === 200) {
-            // Process the response from the PHP page
-            var response1 = xhr1.responseText;
-            alert(response1);
-            // Refresh the page
-            location.reload();
-        }
-    };
+function updatePurchaseOrderUniversal(tabNumber, partNo, rowIndex) {
+    var purchaseOrderInput = document.getElementById('purchaseOrder' + tabNumber + '_' + rowIndex);
+    var purchaseOrder = purchaseOrderInput.value;
+	//var cell=document.getElementById(
 
     // Prepare the data to send
-    var data1 = 'partNo=' + encodeURIComponent(partNo1) +
-                '&newQuantity=' + encodeURIComponent(newQuantity1) +
-                '&oldQuantity=' + encodeURIComponent(oldQuantity1);
-    xhr1.send(data1);
+    var data = 'tabNumber=' + encodeURIComponent(tabNumber) +
+               '&partNo=' + encodeURIComponent(partNo) +
+               '&purchaseOrder=' + encodeURIComponent(purchaseOrder);
+			   
+
+    // Send the data to the PHP page
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'updateUniversalPurchaseOrder.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);  // Parse the JSON string into an object
+            console.log(response);  // To see the full object
+            if (response.message) {
+                console.log(response.message);  // Log the message property
+            } else {
+                console.log("The message property is not set.");
+            }
+			//alert(purchaseOrder);
+			if((purchaseOrder!='NA')&&(purchaseOrder!='na'))
+			{
+            if(response.success) {
+              purchaseOrderInput.style.color="green";
+              purchaseOrderInput.style.fontWeight = "bold";
+
+              
+            } else {
+              purchaseOrderInput.style.color="red";
+              purchaseOrderInput.style.fontWeight = "bold";
+            }
+			}
+            //location.reload();
+        }
+    };
+    xhr.send(data);
 }
+
 
 function updateComments1(partNo1, rowIndex1) {
     var commentsInput1 = document.getElementById('comments1_' + rowIndex1);
@@ -1041,7 +1420,7 @@ function printTable1() {
   var table = document.getElementById("lbt1");
   var windowContent = '<html><head><title>Print Table</title>';
   windowContent += '<style>' + getComputedStyle(table).cssText + '</style>';
-  windowContent += '<style>table { width: 100%; border-collapse: collapse; } th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
+  windowContent += '<style>table { width: 100%; border-collapse: collapse; } input { text-align: center; border: none !important; padding-top:20px; font-size: 15px; font-family:Jost;	width:50%;	} th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
   windowContent += '</head><body>';
 
   // Retrieve the table rows
@@ -1113,8 +1492,6 @@ function printTable1() {
     
     }
 
-
-
 function applyFilters() {
   var category = document.getElementById("category").value;
   var status = document.getElementById("status").value;
@@ -1140,7 +1517,6 @@ function applyFilters() {
     }
   }
 }
-
 
 function fullOrderReceived(partNo, quantity) {
 
@@ -1264,6 +1640,23 @@ function updateStatus(partNo, rowIndex) {
     xhr.send(data);
 }
 
+function refreshdata() {
+
+
+    // Send the data to the PHP page
+    var xhr1 = new XMLHttpRequest();
+    xhr1.open('POST', 'refreshdatakanban.php', true);
+    xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr1.onreadystatechange = function() {
+        if (xhr1.readyState === 4 && xhr1.status === 200) {
+            // Process the response from the PHP page
+            var response1 = xhr1.responseText;
+            location.reload();
+        }
+    };
+    xhr1.send();
+}
+
 function updatePurchaseOrder(partNo, rowIndex) {
     var purchaseOrderInput = document.getElementById('purchaseOrder2_' + rowIndex);
     var purchaseOrder = purchaseOrderInput.value;
@@ -1327,7 +1720,7 @@ function printTable() {
   var table = document.getElementById("lbt2");
   var windowContent = '<html><head><title>Print Table</title>';
   windowContent += '<style>' + getComputedStyle(table).cssText + '</style>';
-  windowContent += '<style>table { width: 100%; border-collapse: collapse; } th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
+  windowContent += '<style>table { width: 100%; border-collapse: collapse; } input { text-align: center; border: none !important; padding-top:20px; font-size: 15px; font-family:Jost;	width:50%;	} th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
   windowContent += '</head><body>';
 
   // Retrieve the table rows
@@ -1360,7 +1753,7 @@ function applyFilters3() {
 
   for (var i = 0; i < rows3.length; i++) {
     var row3 = rows3[i];
-    var statusCell3 = row3.getElementsByTagName("td")[9];
+    var statusCell3 = row3.getElementsByTagName("td")[8];
     var statusText3 = statusCell3.textContent || statusCell3.innerText;
     var showRow3 = true;
 
@@ -1586,7 +1979,7 @@ function printTable3() {
   var table3 = document.getElementById("lbt3");
   var windowContent3 = '<html><head><title>Print Table</title>';
   windowContent3 += '<style>' + getComputedStyle(table3).cssText + '</style>';
-  windowContent3 += '<style>table { width: 100%; border-collapse: collapse; } th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
+  windowContent3 += '<style>table { width: 100%; border-collapse: collapse; } input { text-align: center; border: none !important; padding-top:20px; font-size: 15px; font-family:Jost; width:50%;		} th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
   windowContent3 += '</head><body>';
 
   // Retrieve the table rows
@@ -1613,5 +2006,523 @@ function printTable3() {
 }
 
 
+function applyFilters4() {
+  var category4 = document.getElementById("category").value;
+  var status4 = document.getElementById("status").value;
+  var rows4 = document.getElementById("lbt4").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+  for (var i = 0; i < rows4.length; i++) {
+    var row4 = rows4[i];
+    var statusCell4 = row4.getElementsByTagName("td")[8];
+    var statusText4 = statusCell4.textContent || statusCell4.innerText;
+    var showRow4 = true;
+
+    if (status4 && statusText4 !== status4) {
+      showRow4 = false;
+    }
+
+    if (showRow4) {
+      row4.style.display = "";
+    } else {
+      row4.style.display = "none";
+    }
+  }
+}
+
+function deleteRow4(partNo4) {
+  var confirmed4 = confirm('Are you sure you want to delete this row?');
+
+  if (!confirmed4) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Send the data to the PHP page
+  var xhr4 = new XMLHttpRequest();
+  xhr4.open('POST', 'deleterowconsumables.php', true);
+  xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr4.onreadystatechange = function() {
+    if (xhr4.readyState === 4 && xhr4.status === 200) {
+      // Process the response from the PHP page
+      var response4 = xhr4.responseText;
+      alert(response4);
+      location.reload();
+    }
+  };
+
+  // Prepare the data to send
+  var data4 = 'partNo=' + encodeURIComponent(partNo4);
+  xhr4.send(data4);
+}
+
+function fullOrderReceived4(partNo4, quantity4) {
+  // Display a confirmation prompt with the new value
+  var confirmed4 = confirm('Are you sure you have received ' + quantity4 + ' of ' + partNo4 + '?');
+
+  if (!confirmed4) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Prepare the data to send
+  var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+    '&quantity=' + encodeURIComponent(quantity4);
+
+  // Send the data to the PHP page
+  var xhr4 = new XMLHttpRequest();
+  xhr4.open('POST', 'fullOrderReceivedconsumables.php', true);
+  xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr4.onreadystatechange = function() {
+    if (xhr4.readyState === 4 && xhr4.status === 200) {
+      // Process the response from the PHP page
+      var response4 = xhr4.responseText;
+      alert(response4);
+
+      // Refresh the page
+      location.reload();
+    }
+  };
+  xhr4.send(data4);
+}
+
+function promptUser4(partNo4, oldQuantity4) {
+  var newQuantity4 = prompt("For: " + partNo4 + "\nPartial Ordered Quantity:");
+  var confirmed4 = confirm("Are you sure that you have received " + newQuantity4 + "?");
+
+  if (!confirmed4) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Send the data to a PHP page
+  var xhr4 = new XMLHttpRequest();
+  xhr4.open("POST", "partialOrderReceivedconsumables.php", true);
+  xhr4.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr4.onreadystatechange = function() {
+    if (xhr4.readyState === 4 && xhr4.status === 200) {
+      // Process the response from the PHP page
+      var response4 = xhr4.responseText;
+      alert(response4);
+      // Refresh the page
+      location.reload();
+    }
+  };
+
+  // Prepare the data to send
+  var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+    '&newQuantity=' + encodeURIComponent(newQuantity4) +
+    '&oldQuantity=' + encodeURIComponent(oldQuantity4);
+  xhr4.send(data4);
+}
+
+function updateRequiredQty4(partNo4, rowIndex4) {
+	 //alert(partNo4);
+  var requiredQtyInput4 = document.getElementById('requiredQty4_' + rowIndex4);
+  var requiredQty4 = requiredQtyInput4.value;
+
+  // Display a confirmation prompt with the new value
+  var confirmed4 = confirm('Are you sure you want to update the Required Quantity to ' + requiredQty4 + '?');
+
+  if (!confirmed4) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Prepare the data to send
+  var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+    '&requiredQty=' + encodeURIComponent(requiredQty4);
+
+  // Send the data to the PHP page
+  var xhr4 = new XMLHttpRequest();
+  xhr4.open('POST', 'updaterequiredconsumables.php', true);
+  xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr4.onreadystatechange = function() {
+    if (xhr4.readyState === 4 && xhr4.status === 200) {
+      // Process the response from the PHP page
+      var response4 = xhr4.responseText;
+      alert(response4);
+
+      // Refresh the page
+      location.reload();
+    }
+  };
+  xhr4.send(data4);
+}
+
+function updateStatus4(partNo4, rowIndex4) {
+    var statusSelect4 = document.getElementById('status4_' + rowIndex4);
+    var status4 = statusSelect4.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed4 = confirm('Are you sure you want to update the Status to ' + status4 + '?');
+
+    if (!confirmed4) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+               '&status=' + encodeURIComponent(status4);
+
+    // Send the data to the PHP page
+    var xhr4 = new XMLHttpRequest();
+    xhr4.open('POST', 'updateorderstatusconsumables.php', true);
+    xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr4.onreadystatechange = function() {
+        if (xhr4.readyState === 4 && xhr4.status === 200) {
+            // Process the response from the PHP page
+            var response4 = xhr4.responseText;
+            alert(response4);
+			location.reload();
+        }
+    };
+    xhr4.send(data4);
+}
+
+function updatePurchaseOrder4(partNo4, rowIndex4) {
+    var purchaseOrderInput4 = document.getElementById('purchaseOrder4_' + rowIndex4);
+    var purchaseOrder4 = purchaseOrderInput4.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed4 = confirm('Are you sure you want to update the Purchase Order to ' + purchaseOrder4 + '?');
+
+    if (!confirmed4) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+               '&purchaseOrder=' + encodeURIComponent(purchaseOrder4);
+
+    // Send the data to the PHP page
+    var xhr4 = new XMLHttpRequest();
+    xhr4.open('POST', 'updatepurchaseorderconsumables.php', true);
+    xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr4.onreadystatechange = function() { 
+        if (xhr4.readyState === 4 && xhr4.status === 200) {
+            // Process the response from the PHP page
+            var response4 = xhr4.responseText;
+            alert(response4);
+            location.reload();
+        }
+    };
+    xhr4.send(data4);
+}
+
+
+function updateComments4(partNo4, rowIndex4) {
+    var commentsInput4 = document.getElementById('comments4_' + rowIndex4);
+    var comments4 = commentsInput4.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed4 = confirm('Are you sure you want to update the Comments to ' + comments4 + '?');
+
+    if (!confirmed4) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data4 = 'partNo=' + encodeURIComponent(partNo4) +
+               '&comments=' + encodeURIComponent(comments4);
+
+    // Send the data to the PHP page
+    var xhr4 = new XMLHttpRequest();
+    xhr4.open('POST', 'updatecommentsconsumables.php', true);
+    xhr4.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr4.onreadystatechange = function() {
+        if (xhr4.readyState === 4 && xhr4.status === 200) {             // Process the response from the PHP page
+            var response4 = xhr4.responseText;
+            alert(response4);
+			location.reload();
+        }
+    };
+    xhr4.send(data4);
+}
+
+function printTable4() {
+  var table4 = document.getElementById("lbt4");
+  var windowContent4 = '<html><head><title>Print Table</title>';
+  windowContent4 += '<style>' + getComputedStyle(table4).cssText + '</style>';
+  windowContent4 += '<style>table { width: 100%; border-collapse: collapse; } input { text-align: center; border: none !important; padding-top:20px; font-size: 15px; font-family:Jost; width:50%;	} th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
+  windowContent4 += '</head><body>';
+
+  // Retrieve the table rows
+  var rows4 = table4.rows;
+  for (var i4 = 0; i4 < rows4.length; i4++) {
+    var cells4 = rows4[i4].cells;
+    for (var j4 = cells4.length - 1; j4 >= 0; j4--) {
+      // Check if the current cell index is 8 or 10
+      if (j4 === 7 || j4 === 9 || j4===11 || j4===14) {
+        // Add a class to exempt the column from printing
+        cells4[j4].classList.add('no-print');
+      }
+    }
+  }
+
+  windowContent4 += table4.outerHTML;
+  windowContent4 += '</body></html>';
+
+  var printWindow4 = window.open('', '', '');
+  printWindow4.document.open();
+  printWindow4.document.write(windowContent4);
+  printWindow4.document.close();
+  printWindow4.print();
+}
+
+function applyFilters5() {
+  var category5 = document.getElementById("category").value;
+  var status5 = document.getElementById("status").value;
+  var rows5 = document.getElementById("lbt5").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+  for (var i = 0; i < rows5.length; i++) {
+    var row5 = rows5[i];
+    var statusCell5 = row5.getElementsByTagName("td")[8];
+    var statusText5 = statusCell5.textContent || statusCell5.innerText;
+    var showRow5 = true;
+
+    if (status5 && statusText5 !== status5) {
+      showRow5 = false;
+    }
+
+    if (showRow5) {
+      row5.style.display = "";
+    } else {
+      row5.style.display = "none";
+    }
+  }
+}
+
+function deleteRow5(partNo5) {
+  var confirmed5 = confirm('Are you sure you want to delete this row?');
+
+  if (!confirmed5) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Send the data to the PHP page
+  var xhr5 = new XMLHttpRequest();
+  xhr5.open('POST', 'deleterowlabels.php', true);
+  xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr5.onreadystatechange = function() {
+    if (xhr5.readyState === 4 && xhr5.status === 200) {
+      // Process the response from the PHP page
+      var response5 = xhr5.responseText;
+      alert(response5);
+      location.reload();
+    }
+  };
+
+  // Prepare the data to send
+  var data5 = 'partNo=' + encodeURIComponent(partNo5);
+  xhr5.send(data5);
+}
+
+function fullOrderReceived5(partNo5, quantity5) {
+  // Display a confirmation prompt with the new value
+  var confirmed5 = confirm('Are you sure you have received ' + quantity5 + ' of ' + partNo5 + '?');
+
+  if (!confirmed5) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Prepare the data to send
+  var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+    '&quantity=' + encodeURIComponent(quantity5);
+
+  // Send the data to the PHP page
+  var xhr5 = new XMLHttpRequest();
+  xhr5.open('POST', 'fullOrderReceivedlabels.php', true);
+  xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr5.onreadystatechange = function() {
+    if (xhr5.readyState === 4 && xhr5.status === 200) {
+      // Process the response from the PHP page
+      var response5 = xhr5.responseText;
+      alert(response5);
+
+      // Refresh the page
+      location.reload();
+    }
+  };
+  xhr5.send(data5);
+}
+
+function promptUser5(partNo5, oldQuantity5) {
+  var newQuantity5 = prompt("For: " + partNo5 + "\nPartial Ordered Quantity:");
+  var confirmed5 = confirm("Are you sure that you have received " + newQuantity5 + "?");
+
+  if (!confirmed5) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Send the data to a PHP page
+  var xhr5 = new XMLHttpRequest();
+  xhr5.open("POST", "partialOrderReceivedlabels.php", true);
+  xhr5.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr5.onreadystatechange = function() {
+    if (xhr5.readyState === 4 && xhr5.status === 200) {
+      // Process the response from the PHP page
+      var response5 = xhr5.responseText;
+      alert(response5);
+      // Refresh the page
+      location.reload();
+    }
+  };
+
+  // Prepare the data to send
+  var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+    '&newQuantity=' + encodeURIComponent(newQuantity5) +
+    '&oldQuantity=' + encodeURIComponent(oldQuantity5);
+  xhr5.send(data5);
+}
+
+function updateRequiredQty5(partNo5, rowIndex5) {
+	 //alert(partNo5);
+  var requiredQtyInput5 = document.getElementById('requiredQty5_' + rowIndex5);
+  var requiredQty5 = requiredQtyInput5.value;
+
+  // Display a confirmation prompt with the new value
+  var confirmed5 = confirm('Are you sure you want to update the Required Quantity to ' + requiredQty5 + '?');
+
+  if (!confirmed5) {
+    return; // Exit the function if not confirmed
+  }
+
+  // Prepare the data to send
+  var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+    '&requiredQty=' + encodeURIComponent(requiredQty5);
+
+  // Send the data to the PHP page
+  var xhr5 = new XMLHttpRequest();
+  xhr5.open('POST', 'updaterequiredlabels.php', true);
+  xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+  xhr5.onreadystatechange = function() {
+    if (xhr5.readyState === 4 && xhr5.status === 200) {
+      // Process the response from the PHP page
+      var response5 = xhr5.responseText;
+      alert(response5);
+
+      // Refresh the page
+      location.reload();
+    }
+  };
+  xhr5.send(data5);
+}
+
+function updateStatus5(partNo5, rowIndex5) {
+    var statusSelect5 = document.getElementById('status5_' + rowIndex5);
+    var status5 = statusSelect5.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed5 = confirm('Are you sure you want to update the Status to ' + status5 + '?');
+
+    if (!confirmed5) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+               '&status=' + encodeURIComponent(status5);
+
+    // Send the data to the PHP page
+    var xhr5 = new XMLHttpRequest();
+    xhr5.open('POST', 'updateorderstatuslabels.php', true);
+    xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr5.onreadystatechange = function() {
+        if (xhr5.readyState === 4 && xhr5.status === 200) {
+            // Process the response from the PHP page
+            var response5 = xhr5.responseText;
+            alert(response5);
+			location.reload();
+        }
+    };
+    xhr5.send(data5);
+}
+
+function updatePurchaseOrder5(partNo5, rowIndex5) {
+    var purchaseOrderInput5 = document.getElementById('purchaseOrder5_' + rowIndex5);
+    var purchaseOrder5 = purchaseOrderInput5.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed5 = confirm('Are you sure you want to update the Purchase Order to ' + purchaseOrder5 + '?');
+
+    if (!confirmed5) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+               '&purchaseOrder=' + encodeURIComponent(purchaseOrder5);
+
+    // Send the data to the PHP page
+    var xhr5 = new XMLHttpRequest();
+    xhr5.open('POST', 'updatepurchaseorderlabels.php', true);
+    xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr5.onreadystatechange = function() { 
+        if (xhr5.readyState === 4 && xhr5.status === 200) {
+            // Process the response from the PHP page
+            var response5 = xhr5.responseText;
+            alert(response5);
+            location.reload();
+        }
+    };
+    xhr5.send(data5);
+}
+
+
+function updateComments5(partNo5, rowIndex5) {
+    var commentsInput5 = document.getElementById('comments5_' + rowIndex5);
+    var comments5 = commentsInput5.value;
+
+    // Display a confirmation prompt with the new value
+    var confirmed5 = confirm('Are you sure you want to update the Comments to ' + comments5 + '?');
+
+    if (!confirmed5) {
+        return; // Exit the function if not confirmed
+    }
+
+    // Prepare the data to send
+    var data5 = 'partNo=' + encodeURIComponent(partNo5) +
+               '&comments=' + encodeURIComponent(comments5);
+
+    // Send the data to the PHP page
+    var xhr5 = new XMLHttpRequest();
+    xhr5.open('POST', 'updatecommentslabels.php', true);
+    xhr5.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr5.onreadystatechange = function() {
+        if (xhr5.readyState === 4 && xhr5.status === 200) {             // Process the response from the PHP page
+            var response5 = xhr5.responseText;
+            alert(response5);
+			location.reload();
+        }
+    };
+    xhr5.send(data5);
+}
+
+function printTable5() {
+  var table5 = document.getElementById("lbt5");
+  var windowContent5 = '<html><head><title>Print Table</title>';
+  windowContent5 += '<style>' + getComputedStyle(table5).cssText + '</style>';
+  windowContent5 += '<style>table { width: 100%; border-collapse: collapse; } input { text-align: center; border: none !important; padding-top:20px; font-size: 15px; font-family:Jost;	width:50%;	} th, td { text-align: center; border: 1px solid black; } th {background-color: #ff8a8a;height: 50px;} .no-print,#no-fill { display: none; }</style>';
+  windowContent5 += '</head><body>';
+
+  // Retrieve the table rows
+  var rows5 = table5.rows;
+  for (var i5 = 0; i5 < rows5.length; i5++) {
+    var cells5 = rows5[i5].cells;
+    for (var j5 = cells5.length - 1; j5 >= 0; j5--) {
+      // Check if the current cell index is 8 or 10
+      if (j5 === 7 || j5 === 9 || j5===11 || j5===14) {
+        // Add a class to exempt the column from printing
+        cells5[j5].classList.add('no-print');
+      }
+    }
+  }
+
+  windowContent5 += table5.outerHTML;
+  windowContent5 += '</body></html>';
+
+  var printWindow5 = window.open('', '', '');
+  printWindow5.document.open();
+  printWindow5.document.write(windowContent5);
+  printWindow5.document.close();
+  printWindow5.print();
+}
 
 </script>
