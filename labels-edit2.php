@@ -239,9 +239,31 @@ label {
 	</div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" checked>
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" >
       <label for="tab-4" class="tab-label" onclick="act('tab4')">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
+<?php
+
+				
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+									<h1> Manage Consumables Data</h1>
+											
+							<br><br><a href=\"consumables-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+
+							<a href=\"consumables-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"consumables-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
+?>
+
+	</div>
+    </div>
+    <div class="tab">
+      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch" checked>
+      <label for="tab-5" class="tab-label" onclick="act('tab5')">LABELS</label>
+      <div id="tab5" class="tab-content">
 <?php
 include 'connection.php';
 
@@ -251,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $binlocation = $_POST['binlocation'];
 
   // Prepare the SELECT query
-  $query = "SELECT * FROM consumables WHERE BinLocation = ?";
+  $query = "SELECT * FROM labels WHERE BinLocation = ?";
 
   // Prepare the statement
   $stmt = mysqli_prepare($conn, $query);
@@ -352,28 +374,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   mysqli_stmt_close($stmt);
 }
 ?>
-
-	</div>
-    </div>
-    <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
-      <label for="tab-5" class="tab-label" onclick="act('tab5')">LABELS</label>
-      <div id="tab5" class="tab-content">
-<?php
-
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-									<h1> Manage Labels Data</h1>
-											
-							<br><br><a href=\"labels-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
-
-							<a href=\"labels-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"labels-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
-?>
 	</div>
     </div>
   </div>
@@ -382,7 +382,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
      window.onload = function() {
-        act('tab4'); // Apply the initial filter
+        act('tab5'); // Apply the initial filter
 		
     };
 function act(tab) {
@@ -412,7 +412,7 @@ $(document).ready(function() {
 
 
     $.ajax({
-      url: 'consumables-edit3.php',
+      url: 'labels-edit3.php',
       method: 'POST',
       data: {
         column: column,

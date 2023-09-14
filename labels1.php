@@ -7,7 +7,7 @@ $flag = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $partno = $_POST['barcode'];
     $_SESSION['partno'] = $partno;
-    $query = "SELECT * FROM tophathymod WHERE PartNo = '$partno'";
+    $query = "SELECT * FROM labels WHERE PartNo = '$partno'";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $PartNo = $row['PartNo'];
             $Max = $row['Max'];
             $Min = $row['Min'];
+            $OrderUnitSpec = $row['OrderUnitSpec'];
+            $PackQty = $row['PackQty'];
             $flag = 1;
         } else {
             $msg = 'Please enter a valid PartNo';
@@ -56,6 +58,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         #header {
             /* background-image: url('path/to/your/image.jpg'); */
         }
+		        @media screen and (max-width: 768px) {
+            /* Adjust styles for smaller screens */
+            .sub-header.white-txt {
+                font-size: 20px;
+            }
+
+            .white-txt.center {
+                font-size: 18px;
+            }
+
+            .form-cube {
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .form-cube h4,
+            .form-cube h2,
+            .form-cube h3 {
+                font-size: 16px;
+            }
+
+            #fill {
+                font-size: 16px;
+            }
+        }
     </style>
     <script type="text/javascript">
         function handleBarcodeInput(event) {
@@ -85,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <section id="page-top-2">
     <h4 class="sub-header white-txt">Stock Management System</h4>
     <br>
-    <h4 class="white-txt center"><center><strong>Welcome to Re-Order/Receive Console</strong></center></h4>
+    <h4 class="white-txt center"><center><strong>Welcome to Labels Re-Order/Recieve Console</strong></center></h4>
 </section>
 
 <?php
@@ -101,25 +128,27 @@ if ($flag) {
         <h4><strong>PartName: </strong> " . $PartName . "</h4><br>
         <h4><strong>Max Stock (No's): </strong> " . $Max . "</h4><br>
         <h4><strong>Min Stock (No's): </strong> " . $Min . "</h4><br>
-        <h1 id=\"heading\">Enter Quantity</h1>
+        <h4><strong>Order Unit Spec: </strong> " . $OrderUnitSpec . "</h4><br>
+        <h4><strong>Pack Qty: </strong> " . $PackQty . "</h4><br>
+        <h1 id=\"heading\">Enter No's to be Ordered</h1>
         <div class=\"input-field\" id=\"idFld\">
           <input type=\"number\" id=\"quantity\" name=\"effectedquantity\" autofocus>
         </div>
-        <button id=\"fill\" class=\"used\" type=\"button\" onclick=\"order('$PartNo')\">Order</button>
+        <button id=\"fill\" class=\"used\" type=\"button\" onclick=\"submitForm('labels2.php')\">Order</button>
 		<br>
 		<br>
 		<br>
 		<button id=\"fill-green\" class=\"receive\" type=\"button\" onclick=\"receive('$PartNo')\">Receive</button><br><br><br>
-		<button id=\"no-fill\"}><strong><a href=\"validateuserhmtp.php?password=" . urlencode($password) . "\" style=\"margin-left:0%;\"> &#x1F50D Scan New Item</a><strong></button><br>
+		<button id=\"no-fill\"}><strong><a href=\"validateuserlabels.php?password=" . urlencode($password) . "\" style=\"margin-left:0%;\"> &#x1F50D Scan New Item</a><strong></button><br>
       </div>
       <center>
-        <a id=\"\" class=\"ri-logout-circle-line\" href=\"hmtpindex.html\">Logout</a>
+        <a id=\"\" class=\"ri-logout-circle-line\" href=\"labelslogin.html\">Logout</a>
       </center>
     </div>
   </form>    ";
 } else {
     echo "
-    <form method=\"post\" id=\"myForm\" action=\"hmtporder1.php\">
+    <form method=\"post\" id=\"myForm\" action=\"labels1.php\">
         <br><br>
         <div class=\"signup-container\">
             <!-- Box container containing elements -->
@@ -130,7 +159,7 @@ if ($flag) {
                 <div class=\"input-field\" id=\"idFld\">
                     <input type=\"text\" id=\"barcodeInput\" name=\"barcode\" autofocus>
                 </div>
-            </div><center> <a id=\"\" class=\"ri-logout-circle-line\" href=\"hmtpindex.html\">Logout</a>
+            </div><center> <a id=\"\" class=\"ri-logout-circle-line\" href=\"labelslogin.html\">Logout</a>
             </center>     
         </div>
     </form>
@@ -140,7 +169,7 @@ if ($flag) {
 }
 	$flag1 = 0;
 	$BackOrder=0;
-    $query1 = "SELECT BackOrder FROM reorderhmtp WHERE PartNo = '$partno'";
+    $query1 = "SELECT BackOrder FROM reorderlabels WHERE PartNo = '$partno'";
     $result1 = mysqli_query($conn, $query1);
 
     if ($result1) {
@@ -182,7 +211,7 @@ function receive(partNo) {
 
     // Send the data to the PHP page
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'partialOrderReceived1.php', true);
+    xhr.open('POST', 'partialOrderReceivedlabels.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -200,37 +229,5 @@ function receive(partNo) {
 		
 		alert("No order placed for this item");
 	}
-}
-function order(partNo) {
-    var newQuantity = document.getElementById('quantity').value;
-	    // Display a confirmation prompt with the new value
-
-    var confirmed = confirm("Are you sure you want to order " + newQuantity + " of "+partNo+ " ?");
-
-
-    if (!confirmed) {
-        return; // Exit the function if not confirmed
-    }
-
-    // Prepare the data to send
-    var data = 'partNo=' + encodeURIComponent(partNo) +
-               '&newQuantity=' + encodeURIComponent(newQuantity);
-
-    // Send the data to the PHP page
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'orderhmtp.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Process the response from the PHP page
-            var response = xhr.responseText;
-            alert(response);
-
-            // Refresh the page
-            location.reload();
-        }
-    };
-    xhr.send(data);
-
 }
 </script>

@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $binlocation = $_POST['binlocation'];
 
     // Prepare the UPDATE query
-    $query = "UPDATE consumables SET `$column` = ?,LastUpdated=now() WHERE BinLocation = ?";
+    $query = "UPDATE labels SET `$column` = ?,LastUpdated=now() WHERE BinLocation = ?";
 
     // Prepare the statement
     $stmt = mysqli_prepare($conn, $query);

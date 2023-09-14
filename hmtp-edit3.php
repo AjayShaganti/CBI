@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $column = $_POST['column'];
     $value = $_POST['value'];
     $binlocation = $_POST['binlocation'];
-
+	
     // Prepare the UPDATE query
     $query = "UPDATE tophathymod SET `$column` = ?,LastUpdated=now() WHERE BinLocation = ?";
 

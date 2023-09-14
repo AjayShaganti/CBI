@@ -186,32 +186,30 @@ label {
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" checked>
+      <input type="radio" name="css-tabs" id="tab-2" class="tab-switch" >
       <label for="tab-2" class="tab-label">KANBAN STOCK</label>
       <div id="tab2" class="tab-content">
 <?php
+								echo "
+												
+								<center><form method=\"post\" id=\"myForm\">
+								<h1> Manage Kanban Data</h1>
+											
+							<br><br><a href=\"kanban-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
 
-				
-								echo "	<div class=\"form-cube\"> 
-								<h1> Updating an item from Kanban list</h1><br>
-								<form method=\"post\" id=\"myForm\" action=\"kanban-edit2.php\">
-									<label> Bin Location: </label>
-									<div class=\"input-field\" id=\"idFld1\"> 
-									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
-									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >Fetch Details</button>
-								</form></div>";
+							<a href=\"kanban-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
+							<a href=\"kanban-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
+							  
+								</form></center>";
 ?>
 </div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-3" class="tab-switch" >
       <label for="tab-3" class="tab-label">CABLES</label>
       <div id="tab3" class="tab-content">
-<?php
-
-				
-								echo "
-												
+<?php			
+							echo "
 								<center><form method=\"post\" id=\"myForm\">
 									<h1> Manage Cables Data</h1>
 											
@@ -225,7 +223,7 @@ label {
 	</div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-4" class="tab-switch" >
       <label for="tab-4" class="tab-label">CONSUMABLES</label>
       <div id="tab4" class="tab-content">
 <?php
@@ -246,23 +244,66 @@ label {
 	</div>
     </div>
     <div class="tab">
-      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch">
+      <input type="radio" name="css-tabs" id="tab-5" class="tab-switch" checked>
       <label for="tab-5" class="tab-label">LABELS</label>
       <div id="tab5" class="tab-content">
 <?php
+include 'connection.php';
+$flag=0;
 
-				
-								echo "
-												
-								<center><form method=\"post\" id=\"myForm\">
-									<h1> Manage Labels Data</h1>
-											
-							<br><br><a href=\"labels-add1.php\" id=\"no-fill\" class=\"manageusersadd\"><h2>ADD</h2></a><br><br>
+$msg = ""; // Initialize the message variable
+$flag=0;
 
-							<a href=\"labels-delete1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>DELETE</h2></a><br><br>
-							<a href=\"labels-edit1.php\" id=\"no-fill\" class=\"manageuserssubtract\"><h2>UPDATE</h2></a>
-							  
-								</form></center>";
+$binlocation = $_SESSION['binlocation'];
+
+$query = "DELETE FROM labels WHERE BinLocation = ?";
+
+// Prepare the statement
+$stmt = mysqli_prepare($conn, $query);
+
+// Bind the parameter
+mysqli_stmt_bind_param($stmt, "s", $binlocation);
+
+// Execute the query or throw an exception
+try {
+    if (mysqli_stmt_execute($stmt)) {
+        $affectedRows = mysqli_stmt_affected_rows($stmt);
+        if ($affectedRows > 0) {
+           $msg= "Data related to ".$binlocation." deleted successfully";
+            $flag = 1;
+        } else {
+            // No matching records found
+            $flag = 0;
+			$msg= "Something went wrong please try again. If problem persists contact admin";
+        }
+    } else {
+        throw new Exception(mysqli_error($conn));
+    }
+} catch (Exception $e) {
+    $msg = "Error: " . $e->getMessage();
+}
+
+// Close the statement
+mysqli_stmt_close($stmt);
+
+
+
+								if($flag){
+									echo "	<div class=\"form-cube\"> 
+								<h2>".$msg."</h2><br>
+								<form method=\"post\" id=\"myForm\" action=\"consumables-delete2.php\">
+									<label> Bin Location: </label>
+									<div class=\"input-field\" id=\"idFld1\"> 
+									<input type=\"text\" id=\"binloaction\" length=\"5\" name=\"binlocation\" required></div>
+									<button id=\"fill\" class=\"signinBttn\" type=\"submit\" value=\"submit\" >Fetch Details</button>
+								</form></div>";
+								}
+								else {
+									echo "	<div class=\"form-cube\"> 
+								<h2>".$msg."</h2><br>
+								</div>";
+								}
+									
 ?>
 	</div>
     </div>

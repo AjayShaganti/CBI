@@ -58,6 +58,9 @@ width:100%;
 	padding-top: 0px;
 
 }
+table {
+	width:90%;
+}
 .tab {
   float: left;
 }
@@ -250,7 +253,12 @@ label {
             echo "<th>Supplier</th>";
             echo "<th>Max</th>";
             echo "<th>Min</th>";
+            echo "<th>ReOrder Qty</th>";
+            echo "<th>Purchase Price</th>";
+            echo "<th>Price For No of units</th>";
+            echo "<th>Price Per Unit</th>";
             echo "<th>Quantity</th>";
+            echo "<th>Total Value</th>";
             echo "<th>Last Updated</th>";
             echo "<th>Category</th>";
             echo "<th>Limit</th>";
@@ -264,7 +272,12 @@ label {
                 echo "<td contenteditable='true' data-column='Supplier'>" . $row['Supplier'] . "</td>";
                 echo "<td contenteditable='true' data-column='Max'>" . $row['Max'] . "</td>";
                 echo "<td contenteditable='true' data-column='Min'>" . $row['Min'] . "</td>";
+                echo "<td contenteditable='false' data-column='ReOrderQty'>" . $row['ReOrderQty'] . "</td>";
+                echo "<td contenteditable='true' data-column='PurchasePrice'>" . $row['PurchasePrice'] . "</td>";
+                echo "<td contenteditable='true' data-column='Units'>" . $row['Units'] . "</td>";
+                echo "<td contenteditable='false' data-column='PricePerUnit'>" . $row['PricePerUnit'] . "</td>";
                 echo "<td contenteditable='true' data-column='Quantity'>" . $row['Quantity'] . "</td>";
+                echo "<td contenteditable='false' data-column='TotalValue'>" . $row['TotalValue'] . "</td>";
                 echo "<td contenteditable='false' data-column='LastUpdated'>" . $formattedTimestamp . "</td>";
                 echo "<td contenteditable='true' data-column='Category'>" . $row['Category'] . "</td>";
                 echo "<td contenteditable='true' data-column='Limit'>" . $row['Limit'] . "</td>";
@@ -279,7 +292,12 @@ label {
             echo "<input type='hidden' name='row[Supplier]' value='" . ($row ? $row['Supplier'] : "") . "'>";
             echo "<input type='hidden' name='row[Max]' value='" . ($row ? $row['Max'] : "") . "'>";
             echo "<input type='hidden' name='row[Min]' value='" . ($row ? $row['Min'] : "") . "'>";
+            echo "<input type='hidden' name='row[ReOrderQty]' value='" . ($row ? $row['ReOrderQty'] : "") . "'>";
+            echo "<input type='hidden' name='row[PurchasePrice]' value='" . ($row ? $row['PurchasePrice'] : "") . "'>";
+            echo "<input type='hidden' name='row[Units]' value='" . ($row ? $row['Units'] : "") . "'>";
+            echo "<input type='hidden' name='row[PricePerUnit]' value='" . ($row ? $row['PricePerUnit'] : "") . "'>";
             echo "<input type='hidden' name='row[Quantity]' value='" . ($row ? $row['Quantity'] : "") . "'>";
+            echo "<input type='hidden' name='row[TotalValue]' value='" . ($row ? $row['TotalValue'] : "") . "'>";
             echo "<input type='hidden' name='row[LastUpdated]' value='" . ($row ? $row['LastUpdated'] : "") . "'>";
             echo "<input type='hidden' name='row[Category]' value='" . ($row ? $row['Category'] : "") . "'>";
             echo "<input type='hidden' name='row[Limit]' value='" . ($row ? $row['Limit'] : "") . "'>";
@@ -425,7 +443,7 @@ function act(tab) {
         var messageDiv = $('#message'); // Get the message div element
 
         $.ajax({
-          url: 'kanban-edit3.php',
+          url: 'hmtp-edit3.php',
           method: 'POST',
           data: {
             column: column,
@@ -438,7 +456,7 @@ function act(tab) {
               // Data update was successful
               cell.addClass('success');
               cell.removeClass('error');
-              messageDiv.html("Successfully updated column: " + column);
+              messageDiv.html("Successfully updated <strong>column: </strong>" + column + " <br>to <strong>value: </strong>" + value + "<br> for <strong>bin: </strong>" + binlocation);
               console.log('Data updated successfully');
               myDiv.style.display = "block";
             } else {
